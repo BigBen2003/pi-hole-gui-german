@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+rm -r /var/www/html/admin
+mv /var/www/html/admin_orig /var/www/html/admin
+
+pihole -up
+
+cp -a /var/www/html/admin /var/www/html/admin_orig
+
+/var/www/replace-german
