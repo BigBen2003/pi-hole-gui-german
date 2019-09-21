@@ -5,9 +5,12 @@ Für alle, die in Pi-Hole eine GUI in Deutscher Sprache suchen, wurde ein Bash-S
 
 Voraussetzungen
 ===============
+
+Vor dem Einsatz dieses Scripts muss das Programm pi-hole von dieser URL https://github.com/pi-hole/pi-hole installiert werden.
+
 Standardmäßig wird pi-Hole auf einem Linux-System (getestet auf Debian Stretch) im Pfad /var/www/html gesichert.
 
-Die bash-Script-Dateien Replace-German und install-update müssen in den Pfad /var/www kopiert werden.
+Die Bash-Script-Dateien Replace-German und install-update müssen in den Pfad /var/www kopiert werden.
 
 Verwendung
 ----------
