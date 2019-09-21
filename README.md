@@ -25,3 +25,25 @@ replace-german
 ==============
 In dieser Bash-Script-Datei sind alle Suche- und Ersetzungsbegriffe enthalten.
 
+Technische Erläuterungen
+========================
+
+Der Original-Pfad inkl. aller Unter-Pfade wird vor dem Verändern als Kopie vorgehalten.
+
+Hintergrund: Beim Aktualisieren des Programs "PiHole" wird erst geprüft, ob irgend einer Änderung vorgenommen wurde. Erst nachdem festgestellt wurde, dass alle DAteien im Original-Zustand vorhanden sind, erfolgt ein Update.
+
+html/admin
+Arbeitspfad für Pi-Hole mit allen Scripts und php-Dateien. Diese Dateien enthalten übersetzte Begriffe.
+
+html/admin_orig
+Ursprüngliches Original mit allen unveränderten Inhalten
+
+Das Script "replace_german" kann wahlweise mit oder ohne Parameter aufgerufen werden:
+
+replace_german [Datei]
+Es werden ausschließlich die Dateien ersetzt, deren Name mit dem angegebenen identisch ist
+
+replace_german
+Ersetzt alle Dateien
+Vor dem Ersetzungsvorgang wird der Pfad html/admin gelöscht und eine Kopie von html/dmin_orign erstellt.
+
