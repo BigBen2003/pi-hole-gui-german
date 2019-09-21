@@ -181,6 +181,9 @@ replaceValuesInFile () {
 		fi
 
 
+		# Footer und Header
+		sed -i "s/>(Update available\!)</>(Aktualisierung verf\&uuml;gbar\!)>/g" "$i"
+
 		sed -i "s/Clients (over time)/Systeme (im Laufe der Zeit)/g" "$i"
 
 		# Anmelde-Infos
