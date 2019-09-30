@@ -371,10 +371,13 @@ flt="$1"
 cd /var/www/html
 
 if [ ! -e admin ]; then
-	mkdir admin
+	echo "PI-Hole ist nicht im Pfad /var/www/html/admin installiert worden."
+	exit
 fi
-
-cd /var/www/html
+if [ ! -e admin_orig ]; then
+	mkdir admin_orig
+	cp -ra admin/* admin_orig
+fi
 
 if [ -z "$flt" ]; then
 	cp -a admin_orig/* admin/
