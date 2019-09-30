@@ -12,7 +12,6 @@ Durchzuführende Aktionen
 
 2. PiHole installieren
 	curl -sSL https://install.pi-hole.net | bash
-	
 	Mit den Standard-Einstellungen wird PiHole in den Pfad /var/www installiert.
 	
 3. Pfad /var/www/repo anlegen
@@ -29,8 +28,7 @@ Durchzuführende Aktionen
 	
 6. Vom admin eine Kopie erstellen
 	$ cp -ra /var/www/html/admin /var/www/html/admin_orig
-	
-	>> Dieser Schritt ist ganz wichtig!! <<
+	Dieser Schritt ist ganz wichtig!!
 
 7. Ersetzungs-Befehl ausführen
 	$ cd /var/www
@@ -42,7 +40,6 @@ Nach diesem Schritt kann die aktuelle Admin-Web-Gui in Deutscher Oberfläche im 
 
 Update von Pi-Hole
 ------------------
-
 Das Script install-update muss ausgeführt werden, um ein Update durchführen zu können.
 	$ cd /var/www
 	$ ./install-update
