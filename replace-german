@@ -6,6 +6,22 @@ replaceValuesInFile () {
 	if [ -f "$i" ]; then
 		#set -x
 
+	    # Eigene Language Dateien ungverändert belassen
+	    if [[ ! "$i" = *germanFiles* ]]; then
+
+		# Im header ein zusätzliches script einbinden:
+		if [[ "$i" = *scripts/pi-hole/php/header.php ]]; then
+			sed -i 's/<\/head>/\n    <script src="germanFiles\/Funcs.js"><\/script>\n\n<\/head>/g' "$i"
+
+			# Beta
+			# Ersetzungsvorgang ist falsch 'sed' findet den Suchbegriff nicht
+			# sed -i 's/sprintf("%.1f",100.0*$memory_usage,1)/number_format(sprintf("%.1f",100.0*$memory_usage,1),1,",",".")/g' "$i"
+			sed -i 's/sprintf(\"%\.1f\",100\.0\*\$memory_usage,1)/number_format(sprintf(\"%\.1f\",100\.0\*\$memory_usage,1),1,\",\",\"\.\")/g' "$i"
+			# Beta
+
+		fi
+
+
 		if [[ "$i" = *jquery.dataTables.min.js* ]]; then
 			sed -i "s/\"Showing 0 to 0 of 0 entries\"/\"Zeige 0 bis 0 von 0 Eintr\&auml;gen\"/g" "$i"
 			sed -i "s/\"(filtered from _MAX_ total entries)\"/\"(gefiltert aus _MAX_ Gesamteintr\&auml;gen)\"/g" "$i"
@@ -166,8 +182,22 @@ replaceValuesInFile () {
 			sed -i "s/\"only A + AAAA queries\"/\"Nur A + AAAA Abfragen\"/g" "$i"
 		fi
 
+		if [[ "$i" = */scripts/pi-hole/js/index.js ]]; then
+			sed -i "s/\"% of \"/\"% von \"/g" "$i"
+		fi
+		if [[ "$i" = */scripts/pi-hole/js/db_lists.js ]]; then
+			sed -i "s/\"% of \"/\"% von \"/g" "$i"
+		fi
+
 		if [[ "$i" = *index.js* ]]; then
 			sed -i "s/\"only A + AAAA queries (\"/\"Nur A + AAAA-Abfragen (insgesamt \"/g" "$i"
+			# Beta
+			sed -i 's/ + data\["dns_queries_all_types"\] + / + formatNumber(data\["dns_queries_all_types"\]) + /g' "$i"
+			# var textData = (idx === 3 && data[header] !== "to") ? data[header] + "%" : data[header];
+			# var textData = (idx === 3 && data[header] !== "to") ? formatNumber(data[header]) + "%" : formatNumber(data[header]);
+			sed -i 's/\? data\[header\] + "%" \: data\[header\]/? formatNumber(data\[header\]) + "%" \: formatNumber(data\[header\])/g' "$i"
+			
+			# Beta End
 			sed -i "s/\" in total)\"/\")\"/g" "$i"
 			sed -i "s/\" to \"/\" nach \"/g" "$i"
 			sed -i "s/\"Upstreams from \"/\"Upstreams von \"/g" "$i"
@@ -363,6 +393,7 @@ replaceValuesInFile () {
 		sed -i "s/Blockiert (Blacklist)/Blockiert (Schwarze Liste)/g" "$i"
 		sed -i "s/Blocked (external)/Gesperrt (extern)/g" "$i"
 		#set +x
+	   fi
 	fi
 }
 
@@ -383,6 +414,10 @@ if [ -z "$flt" ]; then
 	cp -a admin_orig/* admin/
 
 	cd /var/www/html/admin
+	if [ ! -e germanFiles ]; then
+		mkdir germanFiles
+	fi
+	cp -a ../../germanFiles/* germanFiles
 fi
 
 fl=($(find /var/www/html/admin -type d -name '.*' -prune -false -o -type f -not -name '.*' )) # | egrep -i '?[\.php|\.js]$' ))
