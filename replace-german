@@ -28,7 +28,7 @@ function replaceValuesInFile () {
 
 			fi
 
-			if [[ "$i" = *scripts/ppi-hole/js/index.js ]]; then
+			if [[ "$i" = *scripts/pi-hole/js/index.js ]]; then
 				mysed 's/todayElement\.text() !== data\[today\] \&\&/todayElement\.text() !== formatNumber(data\[today\]) \&\&/g'
 				mysed 's/todayElement\.text() !== data\[today\] + \"%\" \&\&/todayElement\.text() !== formatNumber(data\[today\] + \"%\") \&\&/g'
 			fi
