@@ -66,13 +66,12 @@ function replaceValuesInFile () {
 				mysed "s/\"Loading...\"/\"wird geladen...\"/g"
 			fi
 
-			if [[ "$i" = *settings.php* ]]; then
+			if [[ "$i" = */settings.php* ]]; then
 				mysed "s/>Blocklists</>Sperrlisten</g"
 				mysed "s/>API \/ Web interface</>API \/ Web Schnittstellen</g"
 				mysed "s/>Privacy</>Privatsph\&auml;re</g"
-			fi
+				echo "settings.php"
 
-			if [[ "$i" = *settings.php* ]]; then
 				mysed "s/>Network Information</>Netzwerk Information</g"
 				mysed "s/>Pi-hole Ethernet Interface:</>Pi-hole Ethernet Schnittstelle:</g"
 				mysed "s/>Pi-hole IPv4 address:</>Pi-hole IPv4 Adresse:</g"
@@ -110,7 +109,7 @@ function replaceValuesInFile () {
 				mysed "s/>Save and Update</>Speeicern und aktualisieren</g"
 				mysed "s/>Make sure your router's DHCP server is disabled when using the Pi-hole DHCP server!</>Stellen Sie sicher, dass das DHCP-Server Ihres Routers deaktiviert ist, wenn Sie den Pi-Hole-dHCP-Server verwenden!</g"
 				mysed "s/>Range of IP addresses to hand out</>Bereich der zu verteilenden IP-Adressen</g"
-				mysed "s/\?>disabled<\?/\?>abgeschaltet<\?/g"
+				mysed "s/\?>disabled</\?>abgeschaltet</g"
 				mysed "s/>Router (gateway) IP address</>Router (Gateway) IP Adresse</g"
 				mysed "s/>Advanced DHCP settings</>Erweiterte DHCP Einstellungen</g"
 				mysed "s/>Pi-hole domain name</>Pi-Hole Domain-Name</g"
