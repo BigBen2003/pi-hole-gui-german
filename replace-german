@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT=$(readlink -f $0)
+SCRIPTPATH=`dirname $SCRIPT`
+
 function mysed() {
 		replace="$1"
 		itext=`echo "$itext" | sed "$replace"`
@@ -425,7 +428,7 @@ if [ -z "$flt" ]; then
 	if [ ! -e germanFiles ]; then
 		mkdir germanFiles
 	fi
-	cp -a ../../germanFiles/* germanFiles
+	cp -a $SCRIPTPATH/germanFiles/* germanFiles
 fi
 
 fl=($(find /var/www/html/admin -type d -name '.*' -prune -false -o -type f -not -name '.*' )) # | egrep -i '?[\.php|\.js]$' ))
