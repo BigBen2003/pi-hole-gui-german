@@ -241,7 +241,7 @@ function replaceValuesInFile () {
 			mysed "s/>Forgot password</>Passwort vergessen</g"
 
 			mysed "s/>Verify that cookies are allowed for </>Stellen Sie sicher, dass Cookies zul\&auml;ssig sind f\&uuml;r </g"
-			mysed "s/> Wrong password!</> Falsches Passwort!/g" "$i" 
+			mysed "s/> Wrong password!</> Falsches Passwort!</g" "$i" 
 
 			mysed "s/>Remember me for 7 days</>Erinnere dich an mich für 7 Tage</g"
 			mysed "s/>\&nbsp;\&nbsp;\&nbsp;Log in</>\&nbsp;\&nbsp;\&nbsp;Einloggen</g"
@@ -337,7 +337,7 @@ function replaceValuesInFile () {
 			mysed "s/\> clients)/\> Systeme)/g"
 			mysed "s/Queries Blocked/Abfragen blockiert/g"
 			mysed "s/Percent Blocked/Prozentual blockiert/g"
-			mysed "s/Domains on Blocklist/Domains in Blockliste/g"
+			mysed "s/Domains on Blocklist/Dom\&auml;nen in Blockliste/g"
 
 			# mysed "s/Upstreams from/Upstreams von/g"
 			mysed "s/Upstreams from \"+from+\" to /Upstreams von \"+from+\" nach /g"
