@@ -19,15 +19,23 @@ function replaceValuesInFile () {
 
 			itext=`cat "$i"`
 
+			# Im Footer eine zusätzliche Angabe ausgeben
+			if [[ "$i" = *scripts/pi-hole/php/footer.php ]]; then
+				mysed '/if($FTL_update){ ?>*/ s/$/\n - <strong><a href="https:\/\/github.com\/BigBen2003\/pi-hole-gui-german">Deutsche \&Uuml;bersetzung<\/a><\/strong>/'
+			fi
+
 			# Im header ein zusätzliches script einbinden:
 			if [[ "$i" = *scripts/pi-hole/php/header.php ]]; then
 				mysed 's/<\/head>/\n	<script src="germanFiles\/Funcs.js"><\/script>\n\n<\/head>/g'
 
-				# Beta
-				# Ersetzungsvorgang ist falsch 'sed' findet den Suchbegriff nicht
-				# mysed 's/sprintf("%.1f",100.0*$memory_usage,1)/number_format(sprintf("%.1f",100.0*$memory_usage,1),1,",",".")/g'
-				mysed 's/sprintf(\"%\.1f\",100\.0\*\$memory_usage,1)/number_format(sprintf(\"%\.1f\",100\.0\*\$memory_usage,1),1,\",\",\"\.\")/g'
-				# Beta
+				mysed 's/> DNS service not running</> DNS-Dienst l\&auml;uft nicht</g'
+
+				mysed 's/echo round($celsius,1) . "&nbsp;&deg;C";/echo number_format(round($celsius,1),1,",",".") \. "\&nbsp;\&deg;C";/g'
+				mysed 's/\" . $loaddata\[0\] . "/\" . number_format($loaddata\[0\],2,",",".") . "/g'
+				mysed 's/\" . $loaddata\[1\] . "/\" . number_format($loaddata\[1\],2,",",".") . "/g'
+				mysed 's/\". $loaddata\[2\] . "/\" . number_format($loaddata\[2\],2,",",".") . "/g'
+				mysed 's/\\"Detected \$nproc cores\\"/\\"Erkannte \$nproc Kerne\\"/g'
+				mysed "s/\" . sprintf(\"%\.1f\",100\.0\*\$memory_usage) \. \"/\" . number_format(sprintf(\"%\.1f\",100\.0\*\$memory_usage),1,\",\",\"\.\") \. \"/g"
 
 			fi
 
@@ -201,13 +209,9 @@ function replaceValuesInFile () {
 
 			if [[ "$i" = *index.js* ]]; then
 				mysed "s/\"only A + AAAA queries (\"/\"Nur A + AAAA-Abfragen (insgesamt \"/g"
-				# Beta
 				mysed 's/ + data\["dns_queries_all_types"\] + / + formatNumber(data\["dns_queries_all_types"\]) + /g'
-				# var textData = (idx === 3 && data[header] !== "to") ? data[header] + "%" : data[header];
-				# var textData = (idx === 3 && data[header] !== "to") ? formatNumber(data[header]) + "%" : formatNumber(data[header]);
 				mysed 's/\? data\[header\] + "%" \: data\[header\]/? formatNumber(data\[header\]) + "%" \: formatNumber(data\[header\])/g'
-				
-				# Beta End
+
 				mysed "s/\" in total)\"/\")\"/g"
 				mysed "s/\" to \"/\" nach \"/g"
 				mysed "s/\"Upstreams from \"/\"Upstreams von \"/g"
