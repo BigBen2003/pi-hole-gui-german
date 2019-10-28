@@ -5,7 +5,17 @@ SCRIPTPATH=`dirname $SCRIPT`
 
 function mysed() {
 		replace="$1"
-		itext=`echo "$itext" | sed "$replace"`
+		iNew="$itext"
+		iNew=$(echo "$itext" | sed "$replace")
+		if [ ! "$iNew" = "$itext" ]; then
+			itext="$iNew"
+		else
+			echo "----------------------------------------"
+			echo "Nicht ersetzt:"
+			echo "SED-Befehl: $replace"
+			echo "Datei: $i"
+			echo "----------------------------------------"
+		fi
 }
 
 function replaceValuesInFile () {
@@ -14,18 +24,33 @@ function replaceValuesInFile () {
 	if [ -f "$i" ]; then
 		#set -x
 
-		# Eigene Language Dateien ungverändert belassen
+		# Eigene Language Dateien unver\&auml;ndert belassen
 		if [[ ! "$i" = *germanFiles* ]]; then
 
 			itext=`cat "$i"`
 
-			# Im Footer eine zusätzliche Angabe ausgeben
-			if [[ "$i" = *scripts/pi-hole/php/footer.php ]]; then
-				mysed '/if($FTL_update){ ?>*/ s/$/\n - <strong><a href="https:\/\/github.com\/BigBen2003\/pi-hole-gui-german">Deutsche \&Uuml;bersetzung<\/a><\/strong>/'
+			if [[ "$i" = */scripts/pi-hole/php/footer.php || "$i" = */scripts/pi-hole/php/header.php ]]; then
+				# Footer und Header
+				mysed "s/>(Update available\!)</>(Aktualisierung verf\&uuml;gbar\!)</g"
+				
+				mysed "s/>Web Interface Version </>Web Schnittstellen Version </g"
 			fi
 
-			# Im header ein zusätzliches script einbinden:
-			if [[ "$i" = *scripts/pi-hole/php/header.php ]]; then
+			# Im Footer eine zus\&auml;tzliche Angabe ausgeben
+			if [[ "$i" = */scripts/pi-hole/php/footer.php ]]; then
+				mysed '/if($FTL_update){ ?>*/ s/$/\n - <strong><a href="https:\/\/github.com\/BigBen2003\/pi-hole-gui-german">Deutsche \&Uuml;bersetzung<\/a><\/strong>/'
+				
+				mysed "s/> Donate<\/a><\/strong> if you found this useful.</> Spende<\/a><\/strong> wenn Du dieses n\&uuml;tzlich findest.</g"
+			fi
+
+			# Im header ein zus\&auml;tzliches script einbinden:
+			if [[ "$i" = */scripts/pi-hole/php/header.php ]]; then
+				mysed "s/>Logout</>Abmelden</g"
+				mysed "s/>Login</>Anmelden</g"
+
+				mysed "s/>Session is valid for </>Sitzung ist g\&uuml;ltig f\&uuml;r </g"
+
+
 				mysed 's/<\/head>/\n	<script src="germanFiles\/Funcs.js"><\/script>\n\n<\/head>/g'
 
 				mysed 's/> DNS service not running</> DNS-Dienst l\&auml;uft nicht</g'
@@ -36,12 +61,124 @@ function replaceValuesInFile () {
 				mysed 's/\". $loaddata\[2\] . "/\" . number_format($loaddata\[2\],2,",",".") . "/g'
 				mysed 's/\\"Detected \$nproc cores\\"/\\"Erkannte \$nproc Kerne\\"/g'
 				mysed "s/\" . sprintf(\"%\.1f\",100\.0\*\$memory_usage) \. \"/\" . number_format(sprintf(\"%\.1f\",100\.0\*\$memory_usage),1,\",\",\"\.\") \. \"/g"
+				
+				# Menu
+				mysed "s/class=\"header\">MAIN NAVIGATION<\/li>/class=\"header\">HAUPTNAVIGATION<\/li>/g"
+				mysed "s/<span>Dashboard<\/span>/<span>Übersicht<\/span>/g"
+				
+				mysed "s/>Long term data</>Langzeitdaten</g"
 
+				mysed "s/>Graphics</>Grafiken</g"
+				mysed "s/>Top Lists</>Top Listen</g"
+				
+				mysed "s/>Whitelist</>Wei\&szlig;e Liste</g"
+				mysed "s/>Blacklist</>Schwarze Liste</g"
+
+				mysed "s/>Disable\&nbsp;\&nbsp;\&nbsp;</>Abschalten\&nbsp;\&nbsp;\&nbsp;</g"
+				mysed "s/>Disable</>Abschalten</g"
+				mysed "s/>Enable\&nbsp;\&nbsp;\&nbsp;</>Einschalten\&nbsp;\&nbsp;\&nbsp;</g"
+				
+				
+				
+				
+				mysed "s/>Enable</>Einschalten</g"
+
+				mysed "s/>Permanently</>Permanent</g"
+				mysed "s/>For 10 seconds</>F\&uuml;r 10 Sekunden</g"
+				mysed "s/>For 30 seconds</>F\&uuml;r 30 Sekunden</g"
+				mysed "s/>For 5 minutes</>F\&uuml;r 5 Minuten</g"
+				mysed "s/>Custom time</>Benutzerdefinierte Zeit</g"
+				mysed "s/>Network</>Netzwerk</g"
+
+				mysed "s/>Tools</>Werkzeuge</g"
+				mysed "s/>Update Gravity</>Aktualisierung Gravity</g"
+				mysed "s/>Query Lists</>Abfragelisten</g"
+				mysed "s/>Audit log</>Pr\&uuml;fprotokoll</g"
+				mysed "s/>Tail pihole.log</>pihole.log anzeigen</g"
+				mysed "s/>Tail pihole-FTL.log</>pihole-FTL.log anzeigen</g"
+				
+				mysed "s/>Help</>Hilfe</g"
 			fi
 
-			if [[ "$i" = *scripts/pi-hole/js/index.js ]]; then
+			if [[ "$i" = */scripts/pi-hole/php/header.php || "$i" = */debug.php ]]; then
+				mysed "s/>Generate debug log</>Erstelle debug-Ablaufverfolgungsdatei</g"
+			fi
+			
+			if [[ "$i" = */scripts/pi-hole/php/header.php || "$i" = */help.php ]]; then
+				mysed "s/Memory usage:/Speichernutzung:/g"
+				mysed "s/<\/i> Load:/<\/i> Auslst.:/g"
+				mysed "s/i> Active/i> Aktiv/g"
+				mysed "s/>Query Log</>Abfragen Protokoll</g"
+				mysed "s/>Settings</>Einstellungen</g"
+				mysed "s/>Donate</>Spenden</g"
+			fi
+			
+			if [[ "$i" = */scripts/pi-hole/php/loginpage.php ]]; then
+				mysed "s/>Sign in to start your session</>Melden Sie sich an, um Ihre Sitzung zu starten</g"
+				mysed "s/placeholder=\"Password\"/placeholder=\"Passwort\"/g"
+				mysed "s/> \&rarr; Log in and go to requested page (/> \&rarr; Loggen Sie sich ein und gehen Sie zur gew\&uuml;nschten Seite (/g"
+				mysed "s/>Ctrl+Return</>Strg+Return</g"
+				mysed "s/> \&rarr; Log in and go to Settings page</> \&rarr; Loggen Sie sich ein und gehen Sie zur Einstellung-Seite</g"
+				mysed "s/>Forgot password</>Passwort vergessen</g"
+				mysed "s/>Verify that cookies are allowed for </>Stellen Sie sicher, dass Cookies zul\&auml;ssig sind f\&uuml;r </g"
+				mysed "s/> Wrong password!</> Falsches Passwort!</g" "$i"
+				mysed "s/>Remember me for 7 days</>Erinnere dich an mich f\&uuml;r 7 Tage</g"
+				
+				mysed "s/>\&nbsp;\&nbsp;\&nbsp;Log in</>\&nbsp;\&nbsp;\&nbsp;Einloggen</g"
+
+				mysed "s/After installing Pi-hole for the first time, a password is generated and displayed to the user. The/Nach der erstmaligen Installation von Pi-hole wird ein Passwort generiert und dem Benutzer angezeigt. Das/g"
+				mysed "s/password cannot be retrieved later on, but it is possible to set a new password (or explicitly disable/Passwort kann sp\&auml;ter nicht mehr abgerufen werden, aber es ist m\&ouml;glich, ein neues Passwort festzulegen (oder/g"
+				mysed "s/the password by setting an empty password) using the command/das Passwort explizit zu deaktivieren, indem Sie ein leeres Passwort festlegen), indem Sie den Befehl verwenden:/g"
+			fi
+
+			if [[ "$i" = */db_lists.php || "$i" = */db_graph.php || "$i" = */db_queries.php ]]; then
+				mysed "s/Depending on how large of a range you specified, the request may time out while Pi-hole tries to retrieve all the data./Je nachdem, wie gro\&szlig; der von Ihnen angegebene Bereich ist, tritt m\&ouml;glicherweise eine Zeit\&uuml;berschreitung auf, w\&auml;hrend Pi-hole versucht, alle Daten abzurufen./g"
+			fi
+
+			if [[ "$i" = */db_graph.php ]]; then
+				mysed "s/Queries over the selected time period/Abfragen \&uuml;ber den ausgew\&auml;hlten Zeitraum/g"
+			fi
+
+			if [[ "$i" = */scripts/pi-hole/js/index.js || "$i" = */scripts/pi-hole/js/db_graph.js ]]; then
+				mysed "s/Total DNS Queries/Gesamte DNS-Abfragen/g"
+				mysed "s/Blocked DNS Queries/Blockierte DNS Abfragen/g"
+			fi
+
+			if [[ "$i" = */scripts/pi-hole/js/index.js ]]; then
+				mysed "s/\"only A + AAAA queries (\"/\"Nur A + AAAA-Abfragen (insgesamt \"/g"
+				mysed 's/ + data\["dns_queries_all_types"\] + / + formatNumber(data\["dns_queries_all_types"\]) + /g'
+				mysed 's/\? data\[header\] + "%" \: data\[header\]/? formatNumber(data\[header\]) + "%" \: formatNumber(data\[header\])/g'
+
+				mysed "s/\" in total)\"/\")\"/g"
+				mysed "s/\"Upstreams from \"/\"Upstreams von \"/g"
+				mysed "s/\"Forward destinations from \"/\"Ziele weiterleiten von \"/g"
+				mysed "s/\"Client activity from \"/\"Client Aktivit\&auml;t von \"/g"
+				mysed "s/\"A: IPv4 queries\"/\"A: IPv4 Abfragen\"/g"
+				mysed "s/\"AAAA: IPv6 queries\"/\"AAAA: IPv6 Abfragen\"/g"
+				mysed "s/\"Query types from \"+from+\" to \"+to;/\"Abfragetypen von \"+from+\" bis \"+to;/g"
+				mysed "s/\"Query types from \"/\"Abfragetypen von \"/g"
+				mysed "s/\"Query types\"/\"Abfrage Typen\"/g"
+			
+				mysed "s/\"Forward destinations from \"+from+\" to \"+to;/\"Ziele weiterleiten von \"+from+\" nach \"+to;/g"
+				mysed "s/\"Forward destinations\"/\"Ziele weiterleiten\"/g"
+
 				mysed 's/todayElement\.text() !== data\[today\] \&\&/todayElement\.text() !== formatNumber(data\[today\]) \&\&/g'
 				mysed 's/todayElement\.text() !== data\[today\] + \"%\" \&\&/todayElement\.text() !== formatNumber(data\[today\] + \"%\") \&\&/g'
+				
+				mysed "s/Upstreams from \"+from+\" to /Upstreams von \"+from+\" nach /g"
+				
+				mysed "s/Client activity from \"+from+\" to /System Aktivit\&auml;ten von \"+from+\" nach /g"
+				mysed "s/\" to \"/\" nach \"/g"
+			
+			fi
+			
+			if [[ "$i" = */index.php || "$i" = */help.php ]]; then
+				mysed "s/Query Types/Abfragetypen/g"
+			fi
+
+			if [[ "$i" = */scripts/pi-hole/js/footer.js ]]; then
+				mysed "s/ena.text(\"Enable\")/ena.text(\"Anschalten\")/g"
+				mysed "s/\"Enable (/\"Anschalten (/g"
 			fi
 
 			if [[ "$i" = *jquery.dataTables.min.js* ]]; then
@@ -49,6 +186,12 @@ function replaceValuesInFile () {
 				mysed "s/\"(filtered from _MAX_ total entries)\"/\"(gefiltert aus _MAX_ Gesamteintr\&auml;gen)\"/g"
 				mysed "s/\"Show _MENU_ entries\"/\"Zeige _MENU_ Eintr\&auml;ge\"/g"
 				mysed "s/\"No matching records found\"/\"Keine \&uuml;bereinstimmende Eintr\&auml;ge gefunden\"/g"
+#Beta
+				mysed "s/\": activate to sort column ascending\"/\": Aktivieren, um die Spalte aufsteigend (A-Z) zu sortieren\"/g"
+				mysed "s/\": activate to sort column descending\"/\": Aktivieren, um die Spalte absteigend (Z-A) zu sortieren\"/g"
+				mysed "s/\"No data available in table\"/\"Keine Tabelleneintr\&auml;ge verf\&uuml;gbar\"/g"
+				mysed "s/\"Showing _START_ to _END_ of _TOTAL_ entries\"/\"Anzeige _START_ bis _END_ von _TOTAL Eintr\&auml;ge\"/g"
+#Beta End
 			fi
 
 			if [[ "$i" = *queries.js* ]]; then
@@ -78,6 +221,7 @@ function replaceValuesInFile () {
 			fi
 
 			if [[ "$i" = */settings.php* ]]; then
+				mysed "s/>Top Lists</>Top Listen</g"
 				mysed "s/>Blocklists</>Sperrlisten</g"
 				mysed "s/>API \/ Web interface</>API \/ Web Schnittstellen</g"
 				mysed "s/>Privacy</>Privatsph\&auml;re</g"
@@ -104,10 +248,10 @@ function replaceValuesInFile () {
 				mysed "s/>Danger Zone!</>Gefahrenzone!</g"
 
 				mysed "s/>Disable query logging</>Abfrageprotokollierung deaktivieren</g"
-				mysed "s/>Disable query logging and flush logs</>Abfrageprotokollierung deaktivieren und Protokoll-Eintr\&auml;ge l\&ouml;schen</g"
+				mysed "s/>Disable query logging and flush logs</>Abfrprot. deakt.+Prot-Eintr\&auml;ge l\&ouml;schen</g"
 				mysed "s/>Restart DNS resolver</>DNS-Aufl\&ouml;sung neu starten</g"
 				mysed "s/>Flush logs</>Protolleintr\&auml;ge l\&ouml;schen</g"
-				mysed "s/>Power off System</>System ausschalten</g"
+				mysed "s/>Power off system</>System ausschalten</g"
 				mysed "s/>Restart system</>System neustarten</g"
 
 				mysed "s/\"There was a problem applying your settings.<br>Debugging information:<br>PHP error /\"Beim Anwenden Ihrer Einstellungen ist ein Problem aufgetreten.<br>Debugging-Informationen:<br>PHP Fehler /g"
@@ -131,7 +275,7 @@ function replaceValuesInFile () {
 				mysed "s/>Hint: 0 = infinite, 24 = one day, 168 = one week, 744 = one month, 8760 = one year</>Hinweis: 0 = unendlich, 24 = ein Tag, 168 = eine Woche, 744 = ein Monat, 8760 = ein Jahr</g"
 				mysed "s/>Enable IPv6 support (SLAAC + RA)</>IPv6-Unterst\&uuml;tzung (SLAAC + RA) aktivieren</g"
 				mysed "s/>Enable DHCP rapid commit (fast address assignment)</>Schnelles Festschreiben von DHCP (schnelle Adresszuweisung)  aktivieren</g"
-				mysed "s/>DHCP leases<>DHCP-Mieten<//g"
+				mysed "s/>DHCP leases</>DHCP-Mieten</g"
 				mysed "s/>Currently active DHCP leases</>Derzeit aktive DHCP-Mieten</g"
 				mysed "s/>MAC address</>MAC Adresse</g"
 				mysed "s/>IP address</>IP Adresse</g"
@@ -145,29 +289,78 @@ function replaceValuesInFile () {
 				mysed "s/specified host name will be used. If the host name is omitted, only/angegebene Hostname verwendet. Wenn der Hostname weggelassen wird, dann/g"
 				mysed "s/a static lease will be added.</wird nur eine statische Miete hinzugef\&uuml;gt.</g"
 
-				mysed "s/>Upstream DNS Servers</>>Upstream DNS-Server<</g"
+				mysed "s/>Upstream DNS Servers</>Upstream DNS-Server</g"
 				mysed "s/> disabled </> abgschaltet </g"
-				mysed "s/>ECS (Extended Client Subnet) defines a mechanism for recursive resolvers to send partial client IP address information to authoritative DNS name servers. Content Delivery Networks (CDNs) and latency-sensitive services use this to give geo-located responses when responding to name lookups coming through public DNS resolvers. <em>Note that ECS may result in reduced privacy.</>ECS (Extended Client Subnet) definiert einen Mechanismus für rekursive Resolver, um teilweise IP-Adressinformationen des Clients an autorisierende DNS-Nameserver zu senden. Content Delivery Networks (CDNs) und latenzempfindliche Dienste verwenden diese Option, um geografische Antworten auf Namenssuchen zu geben, die \&uuml;ber \&ouml;ffentliche DNS-Resolver eingehen.<em>Beachten Sie, dass ECS zu einer Einschr\&auml;nkung der Privatsph\&auml;re f\&uuml;hren kann.</g"
-				mysed "s/>Custom 1 (IPv4)</>Benutzerdef. 1 (IPv4)/g"
-				mysed "s/>Custom 2 (IPv4)</>Benutzerdef. 2 (IPv4)/g"
-				mysed "s/>Custom 3 (IPv4)</>Benutzerdef. 3 (IPv4)/g"
-				mysed "s/>Custom 4 (IPv4)</>Benutzerdef. 4 (IPv4)/g"
+				mysed "s/>ECS (Extended Client Subnet) defines a mechanism for recursive resolvers to send partial client IP address information to authoritative DNS name servers. Content Delivery Networks (CDNs) and latency-sensitive services use this to give geo-located responses when responding to name lookups coming through public DNS resolvers. <em>Note that ECS may result in reduced privacy.</>ECS (Extended Client Subnet) definiert einen Mechanismus f\&uuml;r rekursive Resolver, um teilweise IP-Adressinformationen des Clients an autorisierende DNS-Nameserver zu senden. Content Delivery Networks (CDNs) und latenzempfindliche Dienste verwenden diese Option, um geografische Antworten auf Namenssuchen zu geben, die \&uuml;ber \&ouml;ffentliche DNS-Resolver eingehen.<em>Beachten Sie, dass ECS zu einer Einschr\&auml;nkung der Privatsph\&auml;re f\&uuml;hren kann.</g"
+				mysed "s/>Custom 1 (IPv4)</>Benutzerdef. 1 (IPv4)</g"
+				mysed "s/>Custom 2 (IPv4)</>Benutzerdef. 2 (IPv4)</g"
+				mysed "s/>Custom 3 (IPv6)</>Benutzerdef. 3 (IPv6)</g"
+				mysed "s/>Custom 4 (IPv6)</>Benutzerdef. 4 (IPv6)</g"
 
 				mysed "s/>Interface listening behavior</>Schnittstellen abh\&ouml;r Verhalten</g"
-				mysed "s/>Listen on all interfaces</Alle Schnittstellen abh\&ouml;ren/g"
-				mysed "s/>Allows only queries from devices that are at most one hop away (local devices)</>Erm\&ouml;glicht nur Abfragen von Geräten, die h\&ouml;chstens einen Sprung entfernt sind (lokale Ger\&auml;te)</g"
+				mysed "s/>Allows only queries from devices that are at most one hop away (local devices)</>Erm\&ouml;glicht nur Abfragen von Ger\&auml;ten, die h\&ouml;chstens einen Sprung entfernt sind (lokale Ger\&auml;te)</g"
 				mysed "s/>Listen only on interface </>Abh\&ouml;ren nur auf Schnittstelle </g"
 				mysed "s/>Listen on all interfaces, permit all origins</>Alle Schnittstellen abh\&ouml;ren, alle Quellen zulassen</g"
+				mysed "s/>Listen on all interfaces</>Alle Schnittstellen abh\&ouml;ren</g"
 
-				mysed "s/>Note that the last option should not be used on devices which are/>Beachten Sie, dass die letzte Option nicht für Ger\&auml;te verwendet werden/g"
+				mysed "s/>Note that the last option should not be used on devices which are/>Beachten Sie, dass die letzte Option nicht f\&uuml;r Ger\&auml;te verwendet werden/g"
 				mysed "s/directly connected to the Internet. This option is safe if your/sollte, die direkt mit dem Internet verbunden sind. Diese Option ist/g"
 				mysed "s/Pi-hole is located within your local network, i.e. protected behind/sicher, wenn sich Ihr Pi-Hole in Ihrem lokalen Netzwerk befindet, d. H./g"
 				mysed "s/your router, and you have not forwarded port 53 to this device. In/Hinter Ihrem Router gesch\&uuml;tzt ist und Sie Port 53 nicht an dieses Ger\&auml;t/g"
-				mysed "s/virtually all other cases you have to make sure that your Pi-hole is/weitergeleitet haben. In praktisch allen anderen F\&auml;llen müssen Sie sicher-/g"
+				mysed "s/virtually all other cases you have to make sure that your Pi-hole is/weitergeleitet haben. In praktisch allen anderen F\&auml;llen m\&uuml;ssen Sie sicher-/g"
 				mysed "s/properly firewalled.</stellen, dass Ihr Pi-Hole ordnungsgem\&auml;\&szlig; durch eine Firewall gesch\&uuml;tzt ist.</g"
+
+				mysed "s/DHCP Settings/DHCP Einstellungen/g"
+				mysed "s/>From</>Von</g"
+				mysed "s/>To</>Bis</g"
+				mysed "s/>Domain</>Dom\&auml;ne</g"
+				mysed "s/>Lease time in hours</>Mietdauer in Stunden</g"
+
+				mysed "s/>DHCP server enabled</>DHCP Server aktivieren</g"
+
+				mysed "s/Advanced DNS settings/Erweiterte DNS Einstellungen/g"
+				mysed "s/Never forward non-FQDNs/Leite niemals Nicht-FQDNs weiter/g"
+				mysed "s/Never forward reverse lookups for private IP ranges/Leite niemals Reverse-Lookups f\&uuml;r private IP-Bereiche weiter/g"
+
+				mysed "s/>Note that enabling these two options may increase your privacy/>Beachten Sie, dass das Aktivieren dieser beiden Optionen Ihre Privatsph\&auml;re/g"
+				mysed "s/slightly, but may also prevent you from being able to access/geringf\&uuml;gig verbessern kann, Sie jedoch auch daran hindern kann, auf lokale Hostnamen zuzugreifen,/g"
+				mysed "s/local hostnames if the Pi-hole is not used as DHCP server</wenn das Pi-Hole nicht als DHCP-Server verwendet wird</g"
+
+				mysed "s/>Use DNSSEC</>Benutze DNSSEC</g"
+
+				mysed "s/>Conditional Forwarding</>Bedingte Weiterleitung</g"
+
+				mysed "s/>Validate DNS replies and cache DNSSEC data. When forwarding DNS/>Überpr\&uuml;fen Sie die DNS-Antworten und speichern Sie die DNSSEC-/g"
+				mysed "s/queries, Pi-hole requests the DNSSEC records needed to validate/Daten im Cache. Bei der Weiterleitung von DNS-Abfragen fordert/g"
+				mysed "s/the replies. If a domain fails validation or the upstream does not/Pi-hole die zur Validierung der Antworten erforderlichen DNSSEC-/g"
+				mysed "s/support DNSSEC, this setting can cause issues resolving domains./Eintr\&auml;ge an. Wenn eine Domain die Validierung nicht besteht oder/g"
+				mysed "s/Use Google, Cloudflare, DNS.WATCH, Quad9, or another DNS/der Upstream DNSSEC nicht unterst\&uuml;tzt, kann diese Einstellung/g"
+				mysed "s/server which supports DNSSEC when activating DNSSEC. Note that/Probleme beim Aufl\&ouml;sen von Domains verursachen. Verwenden Sie/g"
+				mysed "s/the size of your log might increase significantly/Google, Cloudflare, DNS.WATCH, Quad9 oder einen anderen DNS-Server,/g"
+				mysed "s/when enabling DNSSEC. A DNSSEC resolver test can be found/der DNSSEC unterst\&uuml;tzt, wenn Sie DNSSEC aktivieren. Beachten Sie, dass die Gr\&ouml;\&szlig;e Ihres Protokolls beim Aktivieren von DNSSEC m\&ouml;glicherweise erheblich zunimmt. Einen DNSSEC-Resolvertest finden Sie /g"
+				#mysed "s/<a href=\"http:\/\/dnssec.vs.uni-due.de/\" target=\"_blank\">here</a>.</<a href=\"http:\/\/dnssec.vs.uni-due.de/\" target=\"_blank\">hier</a>.</g"
+				mysed "s/_blank\">here</_blank\">hier</g"
+				#mysed "s/<a href=\"http:\/\/dnssec.vs.uni-due.de/\" target=\"_blank\">here</a>\.</TEST/g"
+
+				mysed "s/>If not configured as your DHCP server, Pi-hole won't be able to/>Wenn Pi-hole nicht als DHCP-Server konfiguriert ist, kann es die Namen/g"
+				mysed "s/determine the names of devices on your local network.  As a/ der Ger\&auml;te in Ihrem lokalen Netzwerk nicht ermitteln./g"
+				mysed "s/result, tables such as Top Clients will only show IP addresses.</ Daher werden in Tabellen wie Top Clients nur IP-Adressen angezeigt.</g"
+
+				mysed "s/>One solution for this is to configure Pi-hole to forward these/>Eine L\&ouml;sung hierf\&uuml;r besteht darin, Pi-hole so zu konfigurieren,/g"
+				mysed "s/requests to your DHCP server (most likely your router), but only for devices on your/dass diese Anforderungen an Ihren DHCP-Server (h\&ouml;chstwahrscheinlich/g"
+				mysed "s/home network.  To configure this we will need to know the IP/an Ihren Router) weitergeleitet werden, jedoch nur f\&uuml;r Ger\&auml;te in/g"
+				mysed "s/address of your DHCP server and the name of your local network.</Ihrem Heimnetzwerk. Um dies zu konfigurieren, m\&uuml;ssen wir die IP-Adresse Ihres DHCP-Servers und den Namen Ihres lokalen Netzwerks kennen.</g"
+
+				mysed "s/>Note: The local domain name must match the domain name specified/>Hinweis: Der lokale Dom\&auml;nenname muss mit dem in Ihrem DHCP-Server/g"
+				mysed "s/in your DHCP server, likely found within the DHCP settings.</angegebenen Dom\&auml;nennamen \&uuml;bereinstimmen, der wahrscheinlich in den DHCP-Einstellungen enthalten ist.</g"
+
+				mysed "s/>Use Conditional Forwarding</>Benutze begingte Weiterleitung</g"
+
+				mysed "s/>IP of your router</>IP von Deinem Router</g"
+				mysed "s/>Local domain name</>Lokaler Dom\&auml;nenname</g"
 			fi
 
-			if [[ "$i" = *queries.php* ]]; then
+			if [[ "$i" = */queries.php* ]]; then
 				mysed "s/\"showing\"\;/\"Anzeige\"\;/g"
 				mysed "s/\"showing permitted\"\;/\"Anzeigen erlaubt\"\;/g"
 				mysed "s/\"showing blocked\"\;/\"Anzeige blockiert\"\;/g"
@@ -189,222 +382,140 @@ function replaceValuesInFile () {
 				mysed "s/>\&nbsp\;Apply filtering on click on Type, Domain, and Clients</>\&nbsp\;Wenden Sie die Filterung an, indem Sie auf Typ, Dom\&auml;ne und Clients klicken</g"
 			fi
 
-			if [[ "$i" = *gravity.php* ]]; then
+			if [[ "$i" = */gravity.php* ]]; then
 				mysed "s/\"Blocking list updated %a days, %H:%I ago\"/\"Sperrliste aktualisiert vor %a Tagen, %H:%I\"/g"
 				mysed "s/\"Blocking list updated one day, %H:%I ago\"/\"Sperrliste aktualisiert vor einem Tag, %H:%I\"/g"
 				mysed "s/\"Blocking list updated %H:%I ago\"/\"Sperrliste aktualisiert vor %H:%I\"/g"
-				mysed "s/\"Blocking list not found\"/\"Sperrliste nicht gefunden\"/g"	
-			fi
-
-			if [[ "$i" = *index.php* ]]; then
-				mysed "s/\"only A + AAAA queries\"/\"Nur A + AAAA Abfragen\"/g"
+				mysed "s/\"Blocking list not found\"/\"Sperrliste nicht gefunden\"/g"
 			fi
 
 			if [[ "$i" = */scripts/pi-hole/js/index.js ]]; then
 				mysed "s/\"% of \"/\"% von \"/g"
 			fi
+
 			if [[ "$i" = */scripts/pi-hole/js/db_lists.js ]]; then
 				mysed "s/\"% of \"/\"% von \"/g"
 			fi
 
-			if [[ "$i" = *index.js* ]]; then
-				mysed "s/\"only A + AAAA queries (\"/\"Nur A + AAAA-Abfragen (insgesamt \"/g"
-				mysed 's/ + data\["dns_queries_all_types"\] + / + formatNumber(data\["dns_queries_all_types"\]) + /g'
-				mysed 's/\? data\[header\] + "%" \: data\[header\]/? formatNumber(data\[header\]) + "%" \: formatNumber(data\[header\])/g'
+			if [[ "$i" = */index.php ]]; then
+				mysed "s/\"only A + AAAA queries\"/\"Nur A + AAAA Abfragen\"/g"
+				mysed "s/Queries answered by/Anfragen beantwortet von/g"
 
-				mysed "s/\" in total)\"/\")\"/g"
-				mysed "s/\" to \"/\" nach \"/g"
-				mysed "s/\"Upstreams from \"/\"Upstreams von \"/g"
-				mysed "s/\"Forward destinations from \"/\"Ziele weiterleiten von \"/g"
-				mysed "s/\"Client activity from \"/\"Client Aktivit\&auml;t von \"/g"
-				mysed "s/\"A: IPv4 queries\"/\"A: IPv4 Abfragen\"/g"
-				mysed "s/\"AAAA: IPv6 queries\"/\"AAAA: IPv6 Abfragen\"/g"
-				mysed "s/\"Query types from \"/\"Abfragetypren von \"/g"
-				mysed "s/\"Query types\"/\"Abfrage Typen\"/g"
-				mysed "s/\"Forward destinations\"/\"Ziele weiterleiten\"/g"
+				mysed "s/>Clients (over time)</>Systeme (im Laufe der Zeit)</g"
+				mysed "s/>Top Clients (total)</>Top Systeme (Gesamt)</g"
+				mysed "s/>Top Clients (blocked only)</>Top Systeme (nur blockierte)</g"
+				
+				mysed "s/Total queries (<span id=\"unique_clients\">-<\/span> clients/Abfragen insgesamt (<span id=\"unique_clients\">-<\/span> Systeme/g"
+				
+				mysed "s/>Percent Blocked</>Prozentual blockiert</g"
+				mysed "s/>Domains on Blocklist</>Dom\&auml;nen in Blockliste</g"
+				
+				mysed "s/Top Permitted Domains/Top zul\&auml;ssige Dom\&auml;nen/g"
+				mysed "s/Queries over last <?php echo getinterval(); ?> hours/Abfragen der letzten <?php echo getinterval(); ?> Stunden/g"
 			fi
 
-			# Footer und Header
-			mysed "s/>(Update available\!)</>(Aktualisierung verf\&uuml;gbar\!)</g"
+			if [[ "$i" = */auditlog.php ]]; then
+				mysed "s/>Blocked queries</>Blockierte Abfragen</g"
+				mysed "s/>Allowed queries</>Erlaubte Abfragen</g"
+				mysed "s/>Audit log (showing live data)</>Pr\&uuml;fungprotokoll (Anzeige Echtdaten)</g"
+				
+				mysed "s/><strong>Important:<\/strong> Note that black- and whitelisted domains are not automatically applied on this page to avoid restarting the DNS service too often. Instead, click on this button, to have the new settings become effective:</><strong>Wichtig:<\/strong> Beachten Sie, dass Schwarz- und Wei\&szlig;e-Listen-Domains auf dieser Seite nicht automatisch angewendet werden, um einen zu h\&auml;ufigen Neustart des DNS-Diensts zu vermeiden. Klicken Sie stattdessen auf diese Schaltfl\&auml;che, damit die neuen Einstellungen wirksam werden:</g"
+				mysed "s/>Update black-\/whitelists</>Aktualisiere Schwarz-\/Wei\&szlig;-Listen</g"
+			fi
 
-			mysed "s/Clients (over time)/Systeme (im Laufe der Zeit)/g"
+			if [[ "$i" = */auditlog.js ]]; then
+				mysed "s/> Audit</> Pr\&uuml;fung</g"
+			fi
 
-			# Anmelde-Infos
-			mysed "s/>Logout</>Abmelden</g"
-			mysed "s/>Login</>Anmelden</g"
-			mysed "s/>Session is valid for </>Sitzung ist g\&uuml;ltig f\&uuml;r </g"
-			mysed "s/>Sign in to start your session</>Melden Sie sich an, um Ihre Sitzung zu starten</g"
-			mysed "s/placeholder=\"Password\"/placeholder=\"Passwort\"/g"
-			mysed "s/> \&rarr; Log in and go to requested page (/> \&rarr; Loggen Sie sich ein und gehen Sie zur gewünschten Seite (/g"
-			mysed "s/>Ctrl+Return</>Strg+Return</g"
-			mysed "s/> \&rarr; Log in and go to Settings page</> \&rarr; Loggen Sie sich ein und gehen Sie zur Einstellung-Seite</g"
-			mysed "s/>Forgot password</>Passwort vergessen</g"
-
-			mysed "s/>Verify that cookies are allowed for </>Stellen Sie sicher, dass Cookies zul\&auml;ssig sind f\&uuml;r </g"
-			mysed "s/> Wrong password!</> Falsches Passwort!</g" "$i" 
-
-			mysed "s/>Remember me for 7 days</>Erinnere dich an mich für 7 Tage</g"
-			mysed "s/>\&nbsp;\&nbsp;\&nbsp;Log in</>\&nbsp;\&nbsp;\&nbsp;Einloggen</g"
-
-			mysed "s/After installing Pi-hole for the first time, a password is generated and displayed to the user. The/Nach der erstmaligen Installation von Pi-hole wird ein Passwort generiert und dem Benutzer angezeigt. Das/g"
-			mysed "s/password cannot be retrieved later on, but it is possible to set a new password (or explicitly disable/Passwort kann später nicht mehr abgerufen werden, aber es ist möglich, ein neues Passwort festzulegen (oder/g"
-			mysed "s/the password by setting an empty password) using the command/das Passwort explizit zu deaktivieren, indem Sie ein leeres Passwort festlegen), indem Sie den Befehl verwenden:/g"
-
-			# Systemaktivitäten
-			mysed "s/Memory usage:/Speichernutzung:/g"
-			mysed "s/<\/i> Load:/<\/i> Auslst.:/g"
-			mysed "s/i> Active/i> Aktiv/g"
+			if [[ "$i" = */auditlog.js || "$i" = */db_queries.js || "$i" = */queries.js ]]; then
+				mysed "s/> Whitelist</> Wei\&szlig;e L.</g"
+				mysed "s/> Blacklist</> Schw. L.</g"
+			fi
 			
-			# Menu
-			mysed "s/class=\"header\">MAIN NAVIGATION<\/li>/class=\"header\">HAUPTNAVIGATION<\/li>/g"
-			mysed "s/<span>Dashboard<\/span>/<span>Übersicht<\/span>/g"
-			mysed "s/>Query Log</>Abfragen Protokoll</g"
-			mysed "s/>Long term data</>Langzeitdaten</g"
+			if [[ "$i" = */db_graph.php ]]; then
+				mysed "s/>Compute graphical statistics from the Pi-hole query database</>Grafische Statistiken aus der PiHole-Abfragen-Datenbank</g"
+			fi
 
-			mysed "s/>Graphics</>Grafiken</g"
-			mysed "s/>Top Lists</>Top Listen</g"
-			mysed "s/Top Clients (total)/Top Clients (Gesamt)/g"
-			mysed "s/Top Clients (blocked only)/Top Clients (nur blockierte)/g"
+			if [[ "$i" = */list.php ]]; then
+				mysed "s/\"Add a domain (example.com or sub.example.com)\"/\"Hinzuf\&uuml;gen einer Dom\&auml;ne (z.B. beispiel.de oder www.beispiel.de)\"/g"
+				mysed "s/echo \"Blacklist\"/echo \"Schwarze Liste\"/g"
+				mysed "s/echo \"Whitelist\"/echo \"Wei\&szlig;e Liste\"/g"
+				mysed "s/>Exact blocking</>Genaues Blockieren</g"
+				mysed "s/>Add (exact)</>Hinzuf\&uuml;gen (genau)</g"
+				mysed "s/>Add (wildcard)</>Hinzuf\&uuml;gen (Platzhalter)</g"
+				mysed "s/>Add (regex)</>Hinzuf\&uuml;gen (reg. Ausdr.)</g"
+			fi
 
-			mysed "s/>Whitelist</>Weiße Liste</g"
-			mysed "s/>Blacklist</>Schwarze Liste</g"
+			if [[ "$i" = */queries.php ]]; then
+				mysed "s/<th>Reply<\/th>/<th>Antwort<\/th>/g"
+			fi
 
-			mysed "s/>Disable\&nbsp;\&nbsp;\&nbsp;</>Abschalten\&nbsp;\&nbsp;\&nbsp;</g"
-			mysed "s/>Disable</>Abschalten</g"
-			mysed "s/\"Disable/\"Abschalten/g"
+			if [[ "$i" = */db_queries.php ]]; then
+				mysed "s/(forwarded)</(weitergel.)</g"
+				mysed "s/>Queries Blocked (Wildcards)</>Abfragen blockiert (Platzhalter)</g"
+				
+				mysed "s/Specify date range to be queried from the Pi-hole query database/Geben Sie den Datumsbereich an, der aus der Pi-Hole-Abfragedatenbank abgefragt werden soll/g"
+				
+				mysed "s/Query status:/Abfrage-Status:/g"
+				mysed "s/Queries Total/Abfragen insgesamt/g"
+				mysed "s/Blocked (exact)/Gesperrt (genau)/g"   
+			fi
 
-			mysed "s/>Enable\&nbsp;\&nbsp;\&nbsp;</>Einschalten\&nbsp;\&nbsp;\&nbsp;</g"
-			mysed "s/ena.text(\"Enable\")/ena.text(\"Anschalten\")/g"
-			mysed "s/\"Enable (/\"Anschalten (/g"
-			mysed "s/>Enable</>Einschalten</g"
+			if [[ "$i" = */db_queries.php || "$i" = */index.php ]]; then
+				mysed "s/>Queries Blocked</>Abfragen blockiert</g"
+			fi
 
-			mysed "s/>Permanently</>Permanent</g"
-			mysed "s/>For 10 seconds</>Für 10 Sekunden</g"
-			mysed "s/>For 30 seconds</>Für 30 Sekunden</g"
-			mysed "s/>For 5 minutes</>Für 5 Minuten</g"
-			mysed "s/>Custom time</>Benutzerdefinierte Zeit</g"
-			mysed "s/>Network</>Netzwerk</g"
+			if [[ "$i" = */queries.php || "$i" = */db_queries.php ]]; then
+				mysed "s/<th>Time<\/th>/<th>Zeit<\/th>/g"
+				mysed "s/<th>Type<\/th>/<th>Typ<\/th>/g"
+				mysed "s/<th>Action<\/th>/<th>Aktion<\/th>/g"
+				
+				mysed "s/Recent Queries/Letzte Abfragen/g"
+			fi
 
-			mysed "s/>Tools</>Werkzeuge</g"
-			mysed "s/>Update Gravity</>Aktualisierung Gravity</g"
-			mysed "s/>Query List</>Abfragelisten</g"
-			mysed "s/>Audit log</>Prüfprotokoll</g"
-			mysed "s/>Tail pihole.log</>pihole.log anzeigen</g"
-			mysed "s/>Tail pihole-FTL.log</>pihole-FTL.log anzeigen</g"
-			mysed "s/>Generate debug log</>Erstelle debug-Ablaufverfolgungsdatei</g"
-			mysed "s/>Settings</>Einstellungen</g"
-			mysed "s/>Donate</>Spenden</g"
-			mysed "s/>Help</>Hilfe</g"
+			if [[ "$i" = */db_lists.php || "$i" = */db_graph.php || "$i" = */db_queries.php ]]; then
+				mysed "s/Click to select date and time range/Klicken Sie hier, um Datum und Zeitbereich auszuw\&auml;hlen/g"
+				mysed "s/Date and time range:/Datums- und Zeitbereich:/g"
+			fi
 
-			# Diese Ersetzungen dürfen nicht ausgeführt werden, da hier auch interne Werte geändert werden.
-			# Nach den Ersetzungen funktioniert die Webseite nicht mehr wie gewünscht.
-			#mysed "s/""Search:""/""Suche:""/g"
-			#mysed "s/""No matching records found""/""keine &uuml;bereinstimmungen gefunden""/g"
-			#mysed "s/""Processing...""/""wird bearbeitet...""/g"
-			#mysed "s/""Loading...""/""wird geladen...""/g"
-			#mysed "s/""Showing 0 to 0 of 0 entries""/""Zeige 0 bis 0 von 0 Einträgen""/g"
-			#mysed "s/""(filtered from _MAX_ total entries)""/""(gefiltert von _MAX_ Gesamteinträgen)""/g"
+			if [[ "$i" = */db_lists.php || "$i" = */queries.php || "$i" = */db_queries.php || "$i" = */index.php ]]; then
+				mysed "s/<th>Client<\/th>/<th>System<\/th>/g"
+			fi
 
-			# Anzeige Werte
-			# Nach der Veränderung werden keine Werte bei der Protokoll-Ausgabe angezeigt
-			#mysed "s/sThousands:"",""/sThousands:"".""/g"
-			#mysed "s/sDecimal:""""/sDecimal:"",""/g"
+			if [[ "$i" = */db_lists.php || "$i" = */queries.php || "$i" = */db_queries.php || "$i" = */auditlog.php || "$i" = */index.php ]]; then
+				mysed "s/<th>Domain<\/th>/<th>Dom\&auml;ne<\/th>/g"
+			fi
 
-			# Tabellen überschriften
-			mysed "s/<th>Hits<\/th>/<th>Treffer<\/th>/g"
-			mysed "s/<th>Domain<\/th>/<th>Domäne<\/th>/g"
-			mysed "s/<th>Frequency<\/th>/<th>Frequenz<\/th>/g"
+			if [[ "$i" = */db_lists.php || "$i" = */index.php ]]; then
+				mysed "s/<th>Frequency<\/th>/<th>Frequenz<\/th>/g"
+			fi
 
-			mysed "s/<th>Requests<\/th>/<th>Anfragen<\/th>/g"
-			mysed "s/<th>Client<\/th>/<th>System<\/th>/g"
-			mysed "s/<th>Actions<\/th>/<th>Aktionen<\/th>/g"
+			if [[ "$i" = */db_lists.php || "$i" = */index.php ]]; then
+				mysed "s/<th>Requests<\/th>/<th>Anfragen<\/th>/g"
+				mysed "s/Top Blocked Domains/Top blockierte Dom\&auml;nen/g"
+			fi
 
+			if [[ "$i" = */audit.log ]]; then
+				mysed "s/<th>Actions<\/th>/<th>Aktionen<\/th>/g"
+			fi
 
-			mysed "s/<th>Time<\/th>/<th>Zeit<\/th>/g"
-			mysed "s/<th>Type<\/th>/<th>Typ<\/th>/g"
-			mysed "s/<th>Reply<\/th>/<th>Antwort<\/th>/g"
-			mysed "s/<th>Action<\/th>/<th>Aktion<\/th>/g"
-			mysed "s/>Blacklist</>Schwarze Liste</g"
-			mysed "s/>Whitelist</>Wei\&szlig;e Liste</g"
+			if [[ "$i" = */db_lists.php || "$i" = */auditlog.php || "$i" = */index.php ]]; then
+				# Tabellen \&uuml;berschriften
+				mysed "s/<th>Hits<\/th>/<th>Treffer<\/th>/g"
+			fi
 
-			mysed "s/(forwarded)</(weitergel.)</g"
-			mysed "s/(cached)/(zw.gespeichert)/g"
-			mysed "s/>Blocked (blacklist)</>Blockiert (Blacklist)</g"
+			if [[ "$i" = */scripts/pi-hole/js/queries.js || "$i" = */scripts/pi-hole/js/db_queries.js ]]; then
+				mysed "s/(cached)/(zw.gespeichert)/g"
+			fi
 
-			# Anderes
-			# mysed "s/Total queries/Abfragen insgesamt/g"
-			mysed "s/Total queries (<span id=\"unique_clients\">-<\/span> clients/Abfragen insgesamt (<span id=\"unique_clients\">-<\/span> Systeme/g"
-			mysed "s/\> clients)/\> Systeme)/g"
-			mysed "s/Queries Blocked/Abfragen blockiert/g"
-			mysed "s/Percent Blocked/Prozentual blockiert/g"
-			mysed "s/Domains on Blocklist/Dom\&auml;nen in Blockliste/g"
-
-			# mysed "s/Upstreams from/Upstreams von/g"
-			mysed "s/Upstreams from \"+from+\" to /Upstreams von \"+from+\" nach /g"
-			mysed "s/Total DNS Queries/Gesamte DNS-Abfragen/g"
-			mysed "s/Blocked DNS Queries/Blockierte DNS Abfragen/g"
-
-			mysed "s/Client activity from \"+from+\" to /System Aktivitäten von \"+from+\" nach /g"
-
-			mysed "s/Query Types/Abfragetypen/g"
-			mysed "s/Query types/Abfragetypen/g"
-
-			mysed "s/Queries answered by/Anfragen beantwortet von/g"
-			mysed "s/Forward destinations/Ziele weitergeleitet/g"
-			mysed "s/Top Permitted Domains/Top zulässige Domänen/g"
-			mysed "s/Top Blocked Domains/Top blockierte Domänen/g"
-
-			mysed "s/Queries over last <?php echo getinterval(); ?> hours/Abfragen der letzten <?php echo getinterval(); ?> Stunden/g"
-			mysed "s/Blocklists used to generate Pi-hole\'s Gravity/Blocklisten zur Erzeugung Pi-hole\'s Gravity/g"
-
-			mysed "s/>checked</>gesetzt</g"
-
-			mysed "s/>Blocked queries</>Blockierte Abfragen</g"
-			mysed "s/>Allowed queries</>Erlaubte Abfragen</g"
-
-			# Buttons
-			mysed "s/> Audit</> Prüfung</g"
-			mysed "s/> Whitelist</> Weiße L.</g"
-			mysed "s/> Blacklist</> Schw. L.</g"
-
-			mysed "s/>Audit log (showing live data)</>Prüfungprotokoll (Anzeige Echtdaten)</g"
-			mysed "s/><strong>Important:<\/strong> Note that black- and whitelisted domains are not automatically applied on this page to avoid restarting the DNS service too often. Instead, click on this button, to have the new settings become effective:</><strong>Wichtig:<\/strong> Beachten Sie, dass Schwarz- und Weiße-Listen-Domains auf dieser Seite nicht automatisch angewendet werden, um einen zu häufigen Neustart des DNS-Diensts zu vermeiden. Klicken Sie stattdessen auf diese Schaltfläche, damit die neuen Einstellungen wirksam werden:</g"
-			mysed "s/>Update black-\/whitelists</>Aktualisiere Schwarz-\/Weiß-Listen</g"
-
-			mysed "s/>Compute graphical statistics from the Pi-hole query database</>Grafische Statistiken aus der PiHole-Abfragen-Datenbank</g"
-
-			mysed "s/\"Add a domain (example.com or sub.example.com)\"/\"Hinzufügen einer Domäne (z.B. beispiel.de oder www.beispiel.de)\"/g"
-			mysed "s/echo \"Blacklist\"/echo \"Schwarze Liste\"/g"
-			mysed "s/echo \"Whitelist\"/echo \"Weiße Liste\"/g"
-			mysed "s/>Exact blocking</>Genaues Blockieren</g"
-			mysed "s/>Add (exact)</>Hinzufügen (genau)</g"
-			mysed "s/>Add (wildcard)</>Hinzufügen (Platzhalter)</g"
-			mysed "s/>Add (regex)</>Hinzufügen (reg. Ausdr.)</g"
-
-			# Ersetzung fehlerhaft:
-			#mysed "s/>Regex<\/a> &amp; Wildcard blocking</>Reg. Ausdr.<\/a> &amp; Platzhalter blockieren</g"
-
-			mysed "s/> Donate<\/a><\/strong> if you found this useful.</> Spende<\/a><\/strong> wenn Du dieses nützlich findest.</g"
-			mysed "s/>Web Interface Version </>Web Schnittstellen Version </g"
-
-			mysed "s/Depending on how large of a range you specified, the request may time out while Pi-hole tries to retrieve all the data./Je nachdem, wie gro\&szlig; der von Ihnen angegebene Bereich ist, tritt m\&ouml;glicherweise eine Zeit\&uuml;berschreitung auf, w\&auml;hrend Pi-hole versucht, alle Daten abzurufen./g" "$1"
-			mysed "s/Queries over the selected time period/Abfragen über den ausgewählten Zeitraum/g"
-			mysed "s/Specify date range to be queried from the Pi-hole query database/Geben Sie den Datumsbereich an, der aus der Pi-Hole-Abfragedatenbank abgefragt werden soll/g"
-
-			mysed "s/Click to select date and time range/Klicken Sie hier, um Datum und Zeitbereich auszuw\&auml;hlen/g"
-
-			mysed "s/Date and time range:/Datums- und Zeitbereich:/g"
-			mysed "s/Query status:/Abfrage-Status:/g"
-			mysed "s/Recent Queries/Letzte Abfragen/g"
-			mysed "s/Queries Total/Abfragen insgesamt/g"
-			mysed "s/Blocked (exact)/Gesperrt (genau)/g"
-			mysed "s/Blocked (regex\/wildcard)/Gesperrt (regul\&auml;rer Ausdruck \/ Platzhalter)/g"
-
-			mysed "s/Blockiert (Blacklist)/Blockiert (Schwarze Liste)/g"
-			mysed "s/Blocked (external)/Gesperrt (extern)/g"
+			if [[ "$i" = */db_queries.php ]]; then
+				mysed "s/>Blocked (blacklist)</>Blockiert (Schwarze Liste)</g"
+				mysed "s/Blocked (regex\/wildcard)/Gesperrt (regul\&auml;rer Ausdruck \/ Platzhalter)/g"
+				mysed "s/Blocked (external)/Gesperrt (extern)/g"
+			fi
 			#set +x
 			
-			# Geänderter Inhalt abspeichern in Datei
+			# Ge\&auml;nderter Inhalt abspeichern in Datei
 			if [[ ! "$itext" == "$itextOrig" ]]; then
 				echo "$itext" > "$i"
 			fi
