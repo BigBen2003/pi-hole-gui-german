@@ -189,7 +189,7 @@ function replaceValuesInFile () {
 				mysed "s/\": activate to sort column ascending\"/\": Aktivieren, um die Spalte aufsteigend (A-Z) zu sortieren\"/g"
 				mysed "s/\": activate to sort column descending\"/\": Aktivieren, um die Spalte absteigend (Z-A) zu sortieren\"/g"
 				mysed "s/\"No data available in table\"/\"Keine Tabelleneintr\&auml;ge verf\&uuml;gbar\"/g"
-				mysed "s/\"Showing _START_ to _END_ of _TOTAL_ entries\"/\"Anzeige _START_ bis _END_ von _TOTAL Eintr\&auml;ge\"/g"
+				mysed "s/\"Showing _START_ to _END_ of _TOTAL_ entries\"/\"Anzeige _START_ bis _END_ von _TOTAL_ Eintr\&auml;ge\"/g"
 				
 				mysed 's/"Previous"/"Vorherige"/g'
 				mysed 's/"Next"/"N\&auml;chste"/g'
@@ -381,6 +381,8 @@ function replaceValuesInFile () {
 				mysed "s/>Timeout or Network Connection Error!</>Timeout oder Netzwerkverbindungsfehler!</g"
 				mysed "s/>Recent Queries </>Letzte Abfragen </g"
 				mysed "s/>\&nbsp\;Apply filtering on click on Type, Domain, and Clients</>\&nbsp\;Wenden Sie die Filterung an, indem Sie auf Typ, Dom\&auml;ne und Systeme klicken</g"
+				
+				mysed 's/>Clear Filters</>Filter entfernen</g'
 			fi
 
 			if [[ "$i" = */scripts/pi-hole/php/gravity.php ]]; then
