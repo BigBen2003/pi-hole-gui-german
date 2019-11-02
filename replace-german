@@ -127,6 +127,14 @@ function replaceValuesInFile () {
 				mysed "s/the password by setting an empty password) using the command/das Passwort explizit zu deaktivieren, indem Sie ein leeres Passwort festlegen), indem Sie den Befehl verwenden:/g"
 			fi
 
+			if [[ "$i" = */db_lists.php ]]; then
+				mysed 's/>Compute Top Lists from the Pi-hole query database</>Top-Listen aus der Pi-Hole-Abfragedatenbank berechnen</g'
+				mysed 's/>Top Domains</>Top Dom\&auml;nen</g'
+				mysed 's/>Top Clients</>Top Systeme</g'
+				
+			fi
+
+
 			if [[ "$i" = */db_lists.php || "$i" = */db_graph.php || "$i" = */db_queries.php ]]; then
 				mysed "s/Depending on how large of a range you specified, the request may time out while Pi-hole tries to retrieve all the data./Je nachdem, wie gro\&szlig; der von Ihnen angegebene Bereich ist, tritt m\&ouml;glicherweise eine Zeit\&uuml;berschreitung auf, w\&auml;hrend Pi-hole versucht, alle Daten abzurufen./g"
 			fi
@@ -177,12 +185,15 @@ function replaceValuesInFile () {
 				mysed "s/\"(filtered from _MAX_ total entries)\"/\"(gefiltert aus _MAX_ Gesamteintr\&auml;gen)\"/g"
 				mysed "s/\"Show _MENU_ entries\"/\"Zeige _MENU_ Eintr\&auml;ge\"/g"
 				mysed "s/\"No matching records found\"/\"Keine \&uuml;bereinstimmende Eintr\&auml;ge gefunden\"/g"
-#Beta
+
 				mysed "s/\": activate to sort column ascending\"/\": Aktivieren, um die Spalte aufsteigend (A-Z) zu sortieren\"/g"
 				mysed "s/\": activate to sort column descending\"/\": Aktivieren, um die Spalte absteigend (Z-A) zu sortieren\"/g"
 				mysed "s/\"No data available in table\"/\"Keine Tabelleneintr\&auml;ge verf\&uuml;gbar\"/g"
 				mysed "s/\"Showing _START_ to _END_ of _TOTAL_ entries\"/\"Anzeige _START_ bis _END_ von _TOTAL Eintr\&auml;ge\"/g"
-#Beta End
+				
+				mysed 's/"Previous"/"Vorherige"/g'
+				mysed 's/"Next"/"N\&auml;chste"/g'
+				mysed 's/"Search:"/"Suche:"/g'
 			fi
 
 			if [[ "$i" = */scripts/pi-hole/js/queries.js ]]; then
@@ -449,6 +460,8 @@ function replaceValuesInFile () {
 				mysed "s/Query status:/Abfrage-Status:/g"
 				mysed "s/Queries Total/Abfragen insgesamt/g"
 				mysed "s/Blocked (exact)/Gesperrt (genau)/g"   
+				
+				mysed 's/>Recent Queries</>Letzte Abfragen</g'
 			fi
 
 			if [[ "$i" = */db_queries.php || "$i" = */index.php ]]; then
@@ -492,6 +505,10 @@ function replaceValuesInFile () {
 				mysed "s/<th>Hits<\/th>/<th>Treffer<\/th>/g"
 			fi
 
+			if [[ "$i" = */scripts/pi-hole/js/db_queries.js ]]; then
+				mysed 's/$("h3#ads_percentage_today").text(parseFloat(percent).toFixed(1).toLocaleString()+" %");/$("h3#ads_percentage_today").text(formatNumber(parseFloat(percent).toFixed(1).toLocaleString()+" %"));/g'
+			fi
+
 			if [[ "$i" = */scripts/pi-hole/js/queries.js || "$i" = */scripts/pi-hole/js/db_queries.js ]]; then
 				mysed "s/(cached)/(zw.gespeichert)/g"
 			fi
@@ -502,14 +519,8 @@ function replaceValuesInFile () {
 				mysed "s/Blocked (external)/Gesperrt (extern)/g"
 			fi
 			#set +x
-			
-			# Ge\&auml;nderter Inhalt abspeichern in Datei
-			if [[ ! "$itext" == "$itextOrig" ]]; then
-				echo "$itext" > "$i"
-			fi
-			
+
 			if [[ "$i" = */scripts/pi-hole/js/db_queries.js || "$i" = */scripts/pi-hole/js/db_graph.js || "$i" = */scripts/pi-hole/js/db_lists.js ]]; then
-				echo "Zeit"
 				mysed 's/"Today"/"Heute"/g'
 				mysed 's/"Yesterday"/"Gestern"/g'
 				mysed 's/"Last 7 Days"/"Letzte 7 Tage"/g'
@@ -518,7 +529,25 @@ function replaceValuesInFile () {
 				mysed 's/"Last Month"/"Letzten Monat"/g'
 				mysed 's/"This Year"/"Dieses Jahr"/g'
 				mysed 's/"All Time"/"Alle Zeiten"/g'
-				mysed 's/"Custom Range"/"Benutzerdef. Bereich"/g'
+
+			#	mysed 's/"Custom Range"/"Benutzerdef. Bereich"/g'
+				
+				mysed 's/"MMMM Do YYYY,/"D. MMMM YYYY,/g'
+				
+				mysed 's/$(this).val(picker.startDate.format(dateformat) + " to " + picker.endDate.format(dateformat));/$(this).val(picker.startDate.format(dateformat) + " bis " + picker.endDate.format(dateformat));/g'
+
+			fi
+			
+			if [[ "$i" = */scripts/pi-hole/js/db_graph.js ]]; then
+				mysed 's/var date = time.getFullYear()+"-"+padNumber(time.getMonth()+1)+"-"+padNumber(time.getDate());/var date = padNumber(time.getDate())+"."+padNumber(time.getMonth()+1)+"."+time.getFullYear();/g'
+				mysed 's/"Queries from "+from+" to "+to+" on "+date;/"Abfragen von "+from+" bis "+to+" am "+date;/g'
+				mysed 's/(" + percentage.toFixed(1) + "%)"/(" + formatNumber(percentage.toFixed(1) + "%)")/g'
+			fi
+
+			# ==============================================================
+			# Neuen Inhalt abspeichern in Datei
+			if [[ ! "$itext" == "$itextOrig" ]]; then
+				echo "$itext" > "$i"
 			fi
 		fi
 	fi
