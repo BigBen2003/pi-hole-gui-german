@@ -29,6 +29,36 @@ function replaceValuesInFile () {
 
 			itext=`cat "$i"`
 
+			if [[ "$i" = */help.php ]]; then
+				mysed 's/>Help center</>Hilfe</g'
+				mysed 's/>Header</>Kopfzeile</g'
+				mysed 's/>Top left: Status display</>Oben links: Statusanzeige</g'
+				mysed 's/>Shows different status messages:</>Zeigt verschiede Statusmeldungen an (Diese Meldungen werden nicht regelm\&auml;\&szlig;ig aktualisiert!):</g'
+				mysed 's/>Status: Current status of the Pi-hole - Active (<i class="fa fa-circle" style="color:#7FFF00"><\/i>), Offline (<i class="fa fa-circle" style="color:#FF0000"><\/i>), or Starting (/>Status: Aktiver Status vom Pi-Hole - Aktiv (<i class="fa fa-circle" style="color:#7FFF00"><\/i>), Offline (<i class="fa fa-circle" style="color:#FF0000"><\/i>), oder Startend (/g'
+				mysed 's/>Temp: Current CPU temperature</>Temp: Aktuelle CPU Temperatur</g'
+				mysed 's/>Load: load averages for the last minute, 5 minutes and 15 minutes, respectively. A load average of 1 reflects the full workload of a single processor on the system. We show a red icon if the current load exceeds the number of available processors on this machine (which is <?php echo $nproc; ?>)</>Auslst.: Auslastungs Durchschnittswerte für die letzte Minute, 5 Minuten bzw. 15 Minuten. Ein Lastdurchschnitt von 1 git die volle Auslastung eines einzelnen Prozessors im System an. Wir zeigen ein rotes Symbol an, wenn die aktuelle Last die Anzahl der verf\&uuml;gbaren Prozessoren auf diesem Computer \&uuml;berschreitet (aktuell: <?php echo $nproc; ?> Prozessor(en))</g'
+				mysed 's/>Memory usage: Shows the percentage of memory actually blocked by applications. We show a red icon if the memory usage exceeds 75%</>Speichernutzung: Zeigt den Prozentsatz des Speichers an, der tats\&auml;chlich von Anwendungen blockiert wurde. Wir zeigen ein rotes Symbol, wenn die Speichernutzung 75% \&uuml;berschreitet</g'
+				mysed 's/>Top right: About</>Oben Rechts: \&Uuml;ber</g'
+				mysed 's/>GitHub: Link to the Pi-hole repository</>GitHub: Verkn\&uuml;pfung zur Pi-hole Quelle</g'
+				mysed "s/>Details: Link to Jacob Salmela's blog with some more details, describing also the concept of the Pi-hole</>Details: Verkn\&uuml;pfung zu Jacob Salmelas Blog mit weiteren Details, die auch das Pi-Hole-Konzept beschreiben</g"
+				mysed 's/>Updates: Link to list of releases</>Aktualisierungen: Verkn\&uuml;pfung zur Liste der Releases</g'
+				mysed 's/>Session timer: Shows the time remaining until the current login session expires.</>Sitzungs-Timer: Zeigt die verbleibende Zeit bis zum Ablauf der aktuellen Anmeldesitzung an.</g'
+				#mysed 's/>Dashboard</>Instrumententafel</g' # Instrumententafel ist eine böde Übersetzung
+				mysed 's/>On the dashboard, you can see various Pi-hole statistics:</>Im Dashboard sind verschiedene Pi-Hole-Statistiken:</g'
+				mysed 's/>Summary: A summary of statistics showing how many total DNS queries have been blocked today, what percentage of DNS queries have been blocked, and how many domains are in the compiled ad list. This summary is updated every 10 seconds.</>Zusammenfassung: Eine Zusammenfassung der Statistiken, aus der hervorgeht, wie viele DNS-Abfragen heute insgesamt blockiert wurden, wie viel Prozent der DNS-Abfragen blockiert wurden und wie viele Dom\&auml;nen in der kompilierten Anzeigenliste enthalten sind. Diese Zusammenfassung wird alle 10 Sekunden aktualisiert.</g'
+				mysed 's/>Queries over time: Graph showing DNS queries (total and blocked) over 10 minute time intervals. More information can be acquired by hovering over the lines. This graph is updated every 10 minutes.</>Abfragen im Zeitverlauf: Diagramm mit DNS-Abfragen (insgesamt und blockiert) in Zeitintervallen von 10 Minuten. Weitere Informationen erhalten Sie, wenn Sie den Mauszeiger über die Zeilen halten. Dieses Diagramm wird alle 10 Minuten aktualisiert.</g'
+				mysed 's/>Query Types: Identifies the types of processed queries</>Abfragetypen: Identifiziert die Typen der verarbeiteten Abfragen</g'
+				mysed 's/>Forward Destinations: Shows to which upstream DNS the permitted requests have been forwarded to.</>Weiterleitungsziele: Zeigt an, an welches Upstream-DNS die zul\&auml;ssigen Anforderungen weitergeleitet wurden.</g'
+				mysed 's/>Top Domains: Ranking of requested sites by number of DNS lookups.</>Top-Dom\&auml;nen: Ranking der angeforderten Websites nach Anzahl der DNS-Lookups.</g'
+				mysed 's/>Top Advertisers: Ranking of requested advertisements by number of DNS lookups.</>Top Inserent: Einstufung der angeforderten Werbung nach Anzahl der DNS-Lookups.</g'
+				mysed 's/>Top Clients: Ranking of how many DNS requests each client has made on the local network.</>Top-Systeme: Rangfolge der DNS-Anforderungen, die jedes System im lokalen Netzwerk gestellt hat.</g'
+				mysed 's/>The Top Domains and Top Advertisers lists may be hidden depending on the privacy Settings on the settings page</>Die Listen "Top Dom\&auml;nen" und "Top Inserent" werden möglicherweise in Abh\&uuml;ngigkeit von den Datenschutzeinstellungen auf der Einstellungsseite ausgeblendet</g'
+
+				mysed 's/>Note that the login session does <em>not<\/em> expire on the dashboard, as the summary is updated every 10 seconds which refreshes the session.</>Beachten Sie, dass die Anmeldesitzung im Dashboard <em>nicht<\/em> abl\&auml;uft, da die Zusammenfassung alle 10 Sekunden aktualisiert wird, wodurch die Sitzung aktualisiert wird.</g'
+
+			fi
+
+
 			if [[ "$i" = */scripts/pi-hole/php/footer.php || "$i" = */scripts/pi-hole/php/header.php ]]; then
 				# Footer und Header
 				mysed "s/>(Update available\!)</>(Aktualisierung verf\&uuml;gbar\!)</g"
@@ -101,8 +131,11 @@ function replaceValuesInFile () {
 				mysed "s/>Generate debug log</>Erstelle debug-Ablaufverfolgungsdatei</g"
 			fi
 			
-			if [[ "$i" = */scripts/pi-hole/php/header.php || "$i" = */help.php ]]; then
+			if [[ "$i" = */scripts/pi-hole/php/header.php ]]; then
 				mysed "s/Memory usage:/Speichernutzung:/g"
+			fi
+			
+			if [[ "$i" = */scripts/pi-hole/php/header.php || "$i" = */help.php ]]; then
 				
 				mysed "s/>Query Log</>Abfragen Protokoll</g"
 				mysed "s/>Settings</>Einstellungen</g"
@@ -171,7 +204,7 @@ function replaceValuesInFile () {
 			
 			fi
 			
-			if [[ "$i" = */index.php || "$i" = */help.php ]]; then
+			if [[ "$i" = */index.php ]]; then
 				mysed "s/Query Types/Abfragetypen/g"
 			fi
 
