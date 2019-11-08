@@ -476,7 +476,10 @@ function replaceValuesInFile () {
 				mysed "s/\"Add a domain (example.com or sub.example.com)\"/\"Hinzuf\&uuml;gen einer Dom\&auml;ne (z.B. beispiel.de oder www.beispiel.de)\"/g"
 				mysed "s/echo \"Blacklist\"/echo \"Schwarze Liste\"/g"
 				mysed "s/echo \"Whitelist\"/echo \"Wei\&szlig;e Liste\"/g"
+				mysed 's/>Add</ title="Neuen Dom\&auml;nen-Eintrag in die Liste aufnehmen">Hinzuf.</g'
+				mysed 's/id="btnRefresh"/id="btnRefresh" title="Liste neu auslesen"/g'
 				mysed "s/>Exact blocking</>Genaues Blockieren</g"
+				mysed "s/>Regex<\/a> \&amp; Wildcard blocking</>RegEx<\/a> \&amp; Wildcard-Blockierung</g"
 				mysed "s/>Add (exact)</>Hinzuf\&uuml;gen (genau)</g"
 				mysed "s/>Add (wildcard)</>Hinzuf\&uuml;gen (Platzhalter)</g"
 				mysed "s/>Add (regex)</>Hinzuf\&uuml;gen (reg. Ausdr.)</g"
