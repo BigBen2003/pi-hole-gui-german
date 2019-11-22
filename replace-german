@@ -58,6 +58,16 @@ function replaceValuesInFile () {
 
 			fi
 
+			if [[ "$i" = */taillog.php ]]; then
+				mysed "s/Output the last lines of the pihole.log file (live)/Ausgabe der letzten Zeilen der Datei pihole.log (live)/g"
+			fi
+			if [[ "$i" = */taillog-FTL.php ]]; then
+				mysed "s/Output the last lines of the pihole-FTL.log file (live)/Ausgabe der letzten Zeilen der Datei pihole-FTL.log (live)/g"
+			fi
+			if [[ "$i" = */taillog-FTL.php || "$i" = */taillog.php ]]; then
+				mysed "s/> Automatic scrolling on update</> Beim Aktualisieren automatisch bl\&auml;ttern</g"
+			fi
+
 
 			if [[ "$i" = */scripts/pi-hole/php/footer.php || "$i" = */scripts/pi-hole/php/header.php ]]; then
 				# Footer und Header
@@ -130,6 +140,11 @@ function replaceValuesInFile () {
 			if [[ "$i" = */scripts/pi-hole/php/header.php || "$i" = */admin/debug.php ]]; then
 				mysed "s/>Generate debug log</>Erstelle debug-Ablaufverfolgungsdatei</g"
 			fi
+			if [[ "$i" = */admin/debug.php ]]; then
+				mysed "s/> Upload debug log and provide token once finished</> Lade das Debug-Protokoll hoch und stelle das Token bei Fertigstellung bereit.</g"
+				mysed "s/>Once you click this button a debug log will be generated and can automatically be uploaded if we detect a working internet connection.</>Sobald Sie auf diese Schaltfl\&auml;che klicken, wird ein Debug-Protokoll erstellt, das automatisch hochgeladen werden kann, wenn eine funktionierende Internetverbindung erkannt wird.</g"
+			fi
+
 			
 			if [[ "$i" = */scripts/pi-hole/php/header.php ]]; then
 				mysed "s/Memory usage:/Speichernutzung:/g"
