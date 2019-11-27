@@ -219,6 +219,15 @@ function replaceValuesInFile () {
 			
 			fi
 			
+
+			if [[ "$i" = */admin/queryads.php ]]; then
+				mysed "s/>Find Blocked Domain In Lists</>Finde blockierte Dom\&auml;ne in Listen</g"
+				mysed 's/"Domain to look for (example.com or sub.example.com)"/"zu suchende Dom\&auml;ne (beispiel.de oder www.beispiel.de)"/g'
+				mysed "s/>Search partial match</>Suche Teil\&Uuml;bereinstimmung</g"
+				mysed "s/>Search exact match</>Suche genaue \&Uuml;bereinstimmung</g"
+			fi
+
+
 			if [[ "$i" = */index.php ]]; then
 				mysed "s/Query Types/Abfragetypen/g"
 			fi
@@ -433,6 +442,11 @@ function replaceValuesInFile () {
 				mysed 's/>Clear Filters</>Filter entfernen</g'
 			fi
 
+			if [[ "$i" = */admin/gravity.php ]]; then
+				mysed "s/>Update Gravity (list of blocked domains)</>Aktualisierung Gravity (Liste von blockierten Dom\&auml;men)</g"
+				mysed "s/>Update</>Aktualisieren</g"
+			fi
+
 			if [[ "$i" = */scripts/pi-hole/php/gravity.php ]]; then
 				mysed "s/\"Blocking list updated %a days, %H:%I ago\"/\"Sperrliste aktualisiert vor %a Tagen, %H:%I\"/g"
 				mysed "s/\"Blocking list updated one day, %H:%I ago\"/\"Sperrliste aktualisiert vor einem Tag, %H:%I\"/g"
@@ -549,7 +563,7 @@ function replaceValuesInFile () {
 				mysed "s/Top Blocked Domains/Top blockierte Dom\&auml;nen/g"
 			fi
 
-			if [[ "$i" = */audit.log ]]; then
+			if [[ "$i" = */audit.log || "$i" = */auditlog.php ]]; then
 				mysed "s/<th>Actions<\/th>/<th>Aktionen<\/th>/g"
 			fi
 
