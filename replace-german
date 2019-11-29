@@ -138,7 +138,7 @@ function replaceValuesInFile () {
 			fi
 
 			if [[ "$i" = */scripts/pi-hole/php/header.php || "$i" = */admin/debug.php ]]; then
-				mysed "s/>Generate debug log</>Erstelle debug-Ablaufverfolgungsdatei</g"
+				mysed "s/>Generate debug log</>Erstelle debug-LOG-Datei</g"
 			fi
 			if [[ "$i" = */admin/debug.php ]]; then
 				mysed "s/> Upload debug log and provide token once finished</> Lade das Debug-Protokoll hoch und stelle das Token bei Fertigstellung bereit.</g"
@@ -180,6 +180,24 @@ function replaceValuesInFile () {
 				mysed 's/>Top Domains</>Top Dom\&auml;nen</g'
 				mysed 's/>Top Clients</>Top Systeme</g'
 				
+			fi
+
+			if [[ "$i" = */admin/network.php ]]; then
+				mysed "s/>Network overview</>Netezwerk\&uuml;bersicht</g"
+				mysed "s/>IP address</>IP Adresse</g"
+				mysed "s/>Hardware address</>Hardware Adresse</g"
+				mysed "s/>Interface</>Schnittstelle</g"
+				mysed "s/>Hostname</>Systemname</g"
+				mysed "s/>First seen</>Erstes Auftreten</g"
+				mysed "s/>Last Query</>Letzte Abfrage</g"
+				mysed "s/>Number of queries</>Abfragen-Anzahl</g"
+				mysed "s/>Uses Pi-hole</>Nutzt Pi-Hole</g"
+				mysed "s/>Background color: Last query from this device seen ...</>Hintergrundfarbe: Letze Abfrage von diesem Ger\&auml;t gesehen ...</g"
+				mysed "s/>just now</>Jetzt gerade</g"
+				mysed "s/>... to ...</>... bis ...</g"
+				mysed "s/>24 hours ago</>vor 24 Stunden</g"
+				mysed "s/>\&gt; 24 hours ago</>vor mehr als 24 Stunden</g"
+ 				mysed "s/>Device does not use Pi-hole</>Ger\&auml;t  verwendet kein PI-Hole</g"
 			fi
 
 
