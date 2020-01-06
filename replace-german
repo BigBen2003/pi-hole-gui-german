@@ -435,6 +435,55 @@ function replaceValuesInFile () {
 
 				mysed "s/>IP of your router</>IP von Deinem Router</g"
 				mysed "s/>Local domain name</>Lokaler Dom\&auml;nenname</g"
+
+				mysed "s/>API settings</>API Einstellungen</g"
+				mysed "s/>Exclude the following domains from being shown in</>Folgende Dom\&auml;nen werden in den Listen ausgeblendet</g"
+				mysed "s/Top Domains \/ Top Advertisers</>Top Dom\&auml;nen \/ Top Werbetreibende</g"
+				mysed 's/"Enter one domain per line"/"Gib eine Dom\&auml;ne pro Zeile ein"/g'
+				mysed "s/>Top Clients</>Top Systeme</g"
+				mysed "s/\"Enter one IP address or host name per line\"/\"Gib eine IP-Adresse oder Hostnamen pro Zeile ein\"/g"
+				mysed "s/>Query Log</>Abfrage Protokoll</g"
+				mysed "s/> Show permitted domain entries</> Zul\&auml;ssige Dom\&auml;nen-Eintr\&auml;ge anzeigen</g"
+				mysed "s/> Show blocked domain entries</> Blockierte Dom\&auml;nen-Eintr\&auml;ge anzeigen</g"
+				mysed "s/>Show API token</>API-Token anzeigen</g"
+				mysed "s/>Web interface settings</>Web Schnittstellen Einstellungen</g"
+				mysed "s/>Interface appearance</>Oberfl\&auml;chendarstellung</g"
+				mysed "s/>Use boxed layout (helpful when working on large screens)</>Box-Darstellung verwenden (sinnvoll bei gro\&szlig;en Bildschirmen)</g"
+				mysed "s/>CPU Temperature Unit</>CPU-Temperatureinheit</g"
+				mysed "s/>Administrator Email Address</>Email-Adresse vom Administrator</g"
+
+				mysed "s/>Privacy settings</>Datenschutzeinstellungen</g"
+				mysed "s/>DNS resolver privacy level</>DNS-Resolver Datenschutzstufe</g"
+				mysed "s/>Specify if DNS queries should be anonymized, available options are:/>Gib an, ob die DNS-Anfragen anonymisiert werden sollen. Folgende Optionen stehen zu Auswahl:/g"
+				mysed "s/>Show everything and record everything<br>Gives maximum amount of statistics</>Alles anzeigen und alles aufzeichnen<br>Gibt maximale Anzahl von Statistiken</g"
+				mysed "s/>Hide domains: Display and store all domains as \"hidden\"<br>This disables the Top Domains and Top Ads tables on the dashboard</>Dom\auml;nen verstecken: Alle Domains als \"versteckt\" anzeigen und speichern<br>Dadurch werden die Tabellen \"Top Dom\&auml;nen\" und \"Top Werbetreibende\" im Dashboard deaktiviert</g"
+				mysed "s/>Hide domains and clients: Display and store all domains as \"hidden\" and all clients as \"0.0.0.0\"<br>This disables all tables on the dashboard</>Dom\&auml;nen und Host-Systeme ausblenden: Alle Domains als \"versteckt\" und alle Host-Systeme als \"0.0.0.0\" anzeigen und speichern<br>Dadurch werden alle Tabellen im Dashboard deaktiviert</g"
+				mysed "s/>Anonymous mode: This disables basically everything except the live anonymous statistics<br>No history is saved at all to the database, and nothing is shown in the query log. Also, there are no top item lists.</>Anonymer Modus: Deaktiviert im Grunde alles außer den anonymen Live-Statistiken<br>Es wird überhaupt kein Verlauf in der Datenbank gespeichert, und im Abfrageprotokoll wird nichts angezeigt. Es gibt auch keine Top-Item-Listen.</g"
+				mysed "s/>No Statistics mode: This disables all statistics processing. Even the query counters will not be available.</>Kein Statistikmodus: Hiermit wird die gesamte Statistikverarbeitung deaktiviert. Sogar die Abfragez\&auml;hler sind nicht verf\&uuml;gbar.</g"
+				mysed "s/>Note that regex blocking is not available when query analyzing is disabled.</>Beachten Sie, dass die Regex-Blockierung nicht verf\&uuml;gbar ist, wenn die Abfrage-Analyse deaktiviert ist.</g"
+				mysed "s/>Additionally, you can disable logging to the file <code>\/var\/log\/pihole.log<\/code> using <code>sudo pihole logging off<\/code>.</>Au\&szlig;erdem kann die Protokollierung in der Datei <code>\/var\/log\/pihole.log<\/code> mithilfe von <code>sudo pihole logout<\/code> deaktiviert werden.</g"
+				mysed "s/>The privacy level may be increased at any time without having to restart the DNS resolver. However, note that the DNS resolver needs to be restarted when lowering the privacy level. This restarting is automatically done when saving.</>Die Datenschutzstufe kann jederzeit erh\&ouml;ht werden, ohne dass der DNS-Resolver neu gestartet werden muss. Beachtet werden muss alerdings, dass der DNS-Resolver neu gestartet werden muss, wenn die Datenschutzstufe gesenkt wird. Dieser Neustart erfolgt automatisch beim Speichern.</g"
+				mysed "s/>Warning: Pi-hole's query logging is activated. Although the dashboard will hide the requested details, all queries are still fully logged to the pihole.log file.</>Warnung: Die Abfrageprotokollierung von Pi-hole ist aktiviert. Obwohl im Dashboard die angeforderten Details ausgeblendet werden, werden alle Abfragen weiterhin vollst\&auml;ndig in der Datei pihole.log protokolliert.</g"
+				mysed "s/>Apply</>Anwenden</g"
+
+				mysed "s/>Teleporter Export/Teleporter exportieren/g"
+				mysed "s/>Export your Pi-hole lists as downloadable archive</>Exportiert die Pi-Hole-Listen als herunterladbares Archiv</g"
+				mysed "s/>Export</>Exportieren</g"
+				mysed "s/>Teleporter Import</>Teleporter Importieren</g"
+				mysed "s/>Import ...</>Importieren ...</g"
+				mysed "s/   Whitelist</   Wei\&szlig;e Liste</g"
+				mysed "s/   Blacklist (exact)</   Schwarze Liste (genau)</g"
+				mysed "s/   Regex filters</   RegEx-Filter</g"
+				mysed "s/   Audit log</   Audit Protokoll</g"
+				mysed "s/>File input</>Datei hochladen</g"
+				mysed "s/>Upload only Pi-hole backup files.</>Nur Pip-Hole Sicherungsdateien hochladen.</g"
+				mysed "s/>Import/>Importieren/g"
+				mysed "s/>The PHP extension <code>Phar<\/code> is not loaded. Please ensure it is installed and loaded if you want to use the Pi-hole teleporter.</>Die PHP-Erweiterung <code>Phar<\/code> wird nicht geladen. Bitte stellen Sie sicher, dass es installiert und geladen ist, wenn Sie den Pi-Hole-Teleporter verwenden möchten.</g"
+				#mysed 's/"Resident memory is the portion of memory occupied by a process that is held in main memory (RAM). The rest of the occupied memory exists in the swap space or file system."/"Residenter Speicher ist der Teil des Speichers, der von einem Prozess belegt wird, der im Hauptspeicher (RAM) gespeichert ist. Der Rest des belegten Speichers befindet sich im Auslagerungsspeicher oder im Dateisystem."/g'
+				#mysed "s/>DNS cache size:</>DNS Cache Gr\&ouml;\&szlig;e:</g"
+				#mysed "s/>DNS cache insertions:</>DNS Cache Einf\&uuml;gungen:</g"
+				#mysed "s/>DNS cache evictions:</>DNS Cache R\&auml;umungen:</g"
+				
 			fi
 
 			if [[ "$i" = */queries.php* ]]; then
