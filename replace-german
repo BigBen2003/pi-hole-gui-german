@@ -476,9 +476,11 @@ function replaceValuesInFile () {
 				mysed "s/   Regex filters</   RegEx-Filter</g"
 				mysed "s/   Audit log</   Audit Protokoll</g"
 				mysed "s/>File input</>Datei hochladen</g"
-				mysed "s/>Upload only Pi-hole backup files.</>Nur Pip-Hole Sicherungsdateien hochladen.</g"
+				mysed "s/>Upload only Pi-hole backup files.</>Nur Pi-Hole Sicherungsdateien hochladen.</g"
 				mysed "s/>Import/>Importieren/g"
 				mysed "s/>The PHP extension <code>Phar<\/code> is not loaded. Please ensure it is installed and loaded if you want to use the Pi-hole teleporter.</>Die PHP-Erweiterung <code>Phar<\/code> wird nicht geladen. Bitte stellen Sie sicher, dass es installiert und geladen ist, wenn Sie den Pi-Hole-Teleporter verwenden möchten.</g"
+				
+				# Übersetzen? Import- / Export Datei-Inhalte?
 				#mysed 's/"Resident memory is the portion of memory occupied by a process that is held in main memory (RAM). The rest of the occupied memory exists in the swap space or file system."/"Residenter Speicher ist der Teil des Speichers, der von einem Prozess belegt wird, der im Hauptspeicher (RAM) gespeichert ist. Der Rest des belegten Speichers befindet sich im Auslagerungsspeicher oder im Dateisystem."/g'
 				#mysed "s/>DNS cache size:</>DNS Cache Gr\&ouml;\&szlig;e:</g"
 				#mysed "s/>DNS cache insertions:</>DNS Cache Einf\&uuml;gungen:</g"
