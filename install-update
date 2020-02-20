@@ -1,5 +1,22 @@
 #!/bin/bash
 
+typeset -i non
+if [ $# -gt 0 ]; then
+	non=1
+else
+	non=0
+	echo "Prüfe: Liegen Aktualisierungen vor?"
+fi
+up=$(pihole -up --check-only | grep 'update available')
+
+if [ -z "$up" ]; then
+	if [ $non -eq 0 ]; then
+		echo "Es liegen keine Aktualisierungen vor."
+	fi
+	exit;
+fi
+
+echo "Installiere Aktualisungen..."
 
 rm -r /var/www/html/admin
 mv /var/www/html/admin_orig /var/www/html/admin
