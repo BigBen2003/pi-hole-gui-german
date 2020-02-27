@@ -56,6 +56,21 @@ function replaceValuesInFile () {
 
 				mysed 's/>Note that the login session does <em>not<\/em> expire on the dashboard, as the summary is updated every 10 seconds which refreshes the session.</>Beachten Sie, dass die Anmeldesitzung im Dashboard <em>nicht<\/em> abl\&auml;uft, da die Zusammenfassung alle 10 Sekunden aktualisiert wird, wodurch die Sitzung aktualisiert wird.</g'
 
+				mysed "s/>Shows the recent queries by parsing Pi-hole's log. It is possible to search through the whole list by using the \"Search\" input field. If the status is reported as \"OK\", then the DNS request has been permitted. Otherwise (\"Pi-holed\") it has been blocked. By clicking on the buttons under \"Action\" the corresponding domains can quickly be added to the white-\/blacklist. The status of the action will be reported on this page. By default, only the recent 10 minutes are shown to enhance the loading speed of the query log page. All domains can be requested by clicking on the corresponding link in the header of the page. Note that the result heavily depends on your privacy settings (see Settings page).</>Zeigt die letzten Abfragen an, indem das Protokoll von Pi-hole analysiert wird. Es ist m\&ouml;glich, die gesamte Liste mithilfe des Eingabefelds \"Suchen\" zu durchsuchen. Wenn der Status als \"OK\" gemeldet wird, wurde die DNS-Anforderung zugelassen. Andernfalls (\"Pi-holed\") wurde es blockiert. Durch Klicken auf die Schaltfl\&auml;chen unter \"Aktion\" k\&ouml;nnen die entsprechenden Domains schnell zur Wei\&szlig;e- \/ Schwarzeliste hinzugef\&uuml;gt werden. Der Status der Aktion wird auf dieser Seite gemeldet. Standardm\&auml;\&szlig;ig werden nur die letzten 10 Minuten angezeigt, um die Ladegeschwindigkeit der Abfrageprotokollseite zu erh\&ouml;hen. Alle Domains k\&ouml;nnen durch Klicken auf den entsprechenden Link in der Kopfzeile der Seite angefordert werden. Beachten Sie, dass das Ergebnis stark von Ihren Datenschutzeinstellungen abh\&auml;ngt (siehe Seite Einstellungen).</g"
+
+				mysed "s/>White- \/ Blacklist</>Wei\&szlig;e- \/ Schwarzeliste</g"
+				mysed "s/>Add or remove domains (or subdomains) from the white-\/blacklist. If a domain is added to e.g. the whitelist, any possible entry of the same domain will be automatically removed from the blacklist and vice versa.</>Hinzuf\&uuml;gen oder Entfernen von Dom\&auml;nen (oder Unterdom\&auml;nen) zur Wei\&szlig;e- \/ Schwarzeliste. Wenn eine Dom\&auml;ne z.B. in der wei\&szlig;en Liste aufgenommen wird, dann wird jeder m\&ouml;gliche Eintrag derselben Dom\&auml;ne automatisch aus der schwarzen Liste entfernt und umgekehrt.</g"
+
+				mysed "s/>Regex blacklisting is supported (entering <samp>^example<\/samp> will block any domain starting with <samp>example<\/samp>, see also our <a href=\"https:\/\/docs.pi-hole.net\/ftldns\/regex\/\" target=\"_blank\">Regex documentation<\/a>). You can still whitelist specific domains even if they fall under a regex pattern.</>RegEx Ausdr\&uuml;cke in der Schwarzen Liste werden unterst\&uuml;tzt. Beispielsweise wird durch Eingabe von <samp>^Beispiel<\/samp> jede Dom\&auml;ne blockiert, die mit <samp>Beispiel<\/samp> beginnt. Siehe auch unsere <a href=\"https:\/\/docs.pi-hole.net\/ftldns\/regex\/\" target=\"_blank\">RegEx Dokumentation<\/a>) Sie k\&ouml;nnen diese auch dann auf die Wei\&szlig;e Liste setzen, wenn diese unter ein RegEx-Muster fallen.</g"
+				
+				mysed "s/>You can white-\/blacklist multiple entries at a time if you separate the domains by spaces.</>Sie k\&ouml;nnen auch mehrere Eintr\&auml;ge gleichzeitig auf die Wei\&szlig;e und Schwarze Liste setzen, wenn Sie die Dom\&auml;nen durch Leerzeichen trennen</g"
+				
+				mysed "s/>Disable \/ Enable</>Deaktivieren \/ Aktivieren</g"
+				mysed "s/Disables\/enables Pi-hole blocking completely. You may have to wait a few minutes for the changes to reach all of your devices. The change will be reflected by a changed status (top left)/Deaktiviert\/aktiviert die Pi-Hole Blockierung vollst\&auml;ndig. M\&ouml;glicherweise m\&uuml;ssen Sie einige Minuten warten, bis die \&auml;nderungen alle Ihre Ger\&auml;te erreichen. Die \&auml;nderung wird durch einen ge\&auml;nderten Status angezeigt (oben links)./g"
+
+				mysed "s/>Tools &rarr; Update Gravity</>Tools &rarr; Gravit\&auml;tsliste aktualisieren</g"
+				mysed "s/>Will download any updates from the third-party blocklists that we source. By default, this command runs once a week via cron (Sunday).</>L\&auml;dt alle Aktualisierungen von den von uns bezogenen Blocklisten von Drittanbietern herunter. Standardm\&auml;\&szlig;ig wird dieser Befehl einmal pro Woche \&uuml;ber cron (Sonntag) ausgef\&uuml;hrt.</g"
+
 			fi
 
 			if [[ "$i" = */taillog.php ]]; then
@@ -104,7 +119,7 @@ function replaceValuesInFile () {
 				
 				# Menu
 				mysed "s/class=\"header\">MAIN NAVIGATION<\/li>/class=\"header\">HAUPTNAVIGATION<\/li>/g"
-				mysed "s/<span>Dashboard<\/span>/<span>Übersicht<\/span>/g"
+				mysed "s/<span>Dashboard<\/span>/<span>\&Uuml;bersicht<\/span>/g"
 				
 				mysed "s/>Long term data</>Langzeitdaten</g"
 
@@ -295,6 +310,26 @@ function replaceValuesInFile () {
 			if [[ "$i" = *jquery.dataTables.min.js* ]]; then
 				mysed "s/\"Processing...\"/\"wird bearbeitet...\"/g"
 				mysed "s/\"Loading...\"/\"wird geladen...\"/g"
+			fi
+
+			if [[ "$i" = */settings.js* ]]; then
+				mysed 's/"Are you sure you want to send a poweroff command to your Pi-Hole?"/"Sind Sie sicher, dass Sie einen Ausschaltbefehl an Ihren Pi-Hole senden wollen?"/g'
+				mysed 's/"Are you sure you want to send a reboot command to your Pi-Hole?"/"Sind Sie sicher, dass Sie einen Neustartbefehl an Ihren Pi-Hole senden wollen?"/g'
+				mysed 's/"Are you sure you want to send a restart command to your DNS server?",/"Wollen Sie wirklich einen Neustartbefehl an Ihren DNS-Server senden?",/g'
+				mysed 's/"Are you sure you want to flush your logs?"/"Sind Sie sicher, dass Du Ihre Protokolle leeren wollen?"/g'
+				mysed 's/"Are you sure you want to disable logging and flush your Pi-hole logs?"/"Sind Sie sicher, dass Sie die Protokollierung deaktivieren und Ihre Pi-Hole-Protokolle leeren wollen?"/g'
+				mysed 's/"Are you sure you want to disable logging?"/"Sind Sie sicher, dass Sie die Protokollierung deaktivieren wollen?"/g'
+			fi
+			if [[ "$i" = */teleporter.php* ]]; then
+				mysed 's/"The file you are trying to upload is not a .tar.gz file (filename: ".htmlentities($filename).", type: ".htmlentities($type)."). Please try again."/"Die Datei, die Sie hochladen wollen, ist keine .tar.gz-Datei (Dateiname:" .htmlentities($filename). ", Typ:" .htmlentities($type). "). Bitte versuchen Sie es erneut."/g'
+			fi
+			if [[ "$i" = */savesettings.php* ]]; then
+				mysed 's/"You can not omit both the IP address and the host name!<br>"/"Sie k\&ouml;nnen nicht sowohl die IP-Adresse als auch den Hostnamen weglassen!<br>"/g'
+			fi
+
+			if [[ "$i" = */jquery.confirm.min.js* ]]; then
+				mysed 's/"Are you sure?"/"Sind Sie sicher?"/g'
+				mysed 's/confirmButton:"Yes",cancelButton:"Cancel"/confirmButton:"Ja",cancelButton:"Abbrechen"/g'
 			fi
 
 			if [[ "$i" = */settings.php* ]]; then
@@ -735,5 +770,4 @@ do
 	fi
 done
 exit
-
 
