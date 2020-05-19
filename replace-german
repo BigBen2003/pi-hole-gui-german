@@ -155,6 +155,11 @@ function replaceValuesInFile () {
 
 				mysed "s/>Disable\&nbsp;\&nbsp;\&nbsp;</>Abschalten\&nbsp;\&nbsp;\&nbsp;</g"
 				mysed "s/>Group Management</>Gruppenmanagement</g"
+				mysed "s/>Groups</>Gruppen</g"
+				mysed "s/>Clients</>Systeme</g"
+				mysed "s/>Domains</>Dom\&auml;nen</g"
+				mysed "s/>Adlists</>Filterlisten</g"
+				
 				mysed "s/>Disable</>Abschalten</g"
 				mysed "s/>Enable\&nbsp;\&nbsp;\&nbsp;</>Einschalten\&nbsp;\&nbsp;\&nbsp;</g"
 #
@@ -395,11 +400,7 @@ function replaceValuesInFile () {
 				mysed "s/>Disable query logging</>Abfrageprotokollierung deaktivieren</g"
 		#		mysed "s/>Disable query logging and flush logs</>Abfrprot. deakt.+Prot-Eintr\&auml;ge l\&ouml;schen</g"
 		
-				mysed "s/>Flush network table</>Netzwerk-Tabelle l\&ouml;schen</g"
-				# Dieser Button darf nicht umbenannt werden, da sonst ein Fehler ...
-				# 1049 (42000): Unbekannte Datenbank
-				# ... auftritt.
-				
+				mysed "s/>Flush network table</>Netzwerk-Tabelle l\&ouml;schen</g"				
 				mysed "s/>Restart DNS resolver</>DNS-Aufl\&ouml;sung neu starten</g"
 				mysed "s/>Flush logs</>Protolleintr\&auml;ge l\&ouml;schen</g"
 				mysed "s/>Power off system</>System ausschalten</g"
@@ -569,6 +570,41 @@ function replaceValuesInFile () {
 				
 			fi
 
+			if [[ "$i" = */admin/groups.php ]]; then
+				mysed "s/>Group management</>Gruppenverwaltung</g"
+				mysed "s/Add a new group/Eine neue Gruppe hinzuf\&uuml;gen/g"
+				mysed "s/List of configured groups/Liste der eingestellten Gruppen/g"
+				mysed "s/>Add</>Hinzuf\&uuml;gen</g"
+				mysed "s/>Reset sorting</>Sortierung zur\&uuml;cksetzen</g"
+				
+				mysed "s/>Name:</>Namen:</g"
+				mysed "s/>Description:</>Beschreibung:</g"
+				mysed "s/\"Group name\"/\"Gruppenname\"/g"
+				mysed "s/\"Group description (optional)\"/\"Gruppenbeschreibung (wahlweise)\"/g"
+			fi
+			if [[ "$i" = *scripts/pi-hole/js/groups.js ]]; then
+				mysed "s/\"Adding group...\"/\"F\&uuml;ge Gruppe hinzu...\"/g"
+				mysed "s/\"Warning\", \"Please specify a group name\"/\"Warnung\", \"Es muss ein Gruppennamen angegeben werden.\"/g"
+				mysed "s/\"Successfully added group\"/\"Guppe erfolgreich hinzugef\&uuml;gt\"/g"
+				mysed "s/\"Error while adding new group\"/\"Fehler beim hinzuf\&uuml;gen der neuen Gruppe\"/g"
+				
+				mysed "s/\"Enabled\"/\"An\"/g"
+				mysed "s/\"Disabled\"/\"Aus\"/g"
+			fi
+			
+			if [[ "$i" = */groups-clients.php ]]; then
+				mysed "s/>Client group management</>System Gruppenverwaltung</g"
+			fi
+
+			if [[ "$i" = */groups-domains.php ]]; then
+				mysed "s/><?php echo \$pagetitle; ?> management</>Dom\&auml;ne Verwaltung</g"
+			fi
+
+			if [[ "$i" = */groups-adlists.php ]]; then
+				mysed "s/>Adlist group management</>Filterlisten Gruppenverwaltung</g"
+				
+			fi
+
 			if [[ "$i" = */queries.php* ]]; then
 				mysed "s/\"showing\"\;/\"Anzeige\"\;/g"
 				mysed "s/\"showing permitted\"\;/\"Anzeigen erlaubt\"\;/g"
@@ -597,12 +633,13 @@ function replaceValuesInFile () {
 				mysed "s/>Update</>Aktualisieren</g"
 			fi
 
-		#	if [[ "$i" = */scripts/pi-hole/php/gravity.php ]]; then
-		#		mysed "s/\"Blocking list updated %a days, %H:%I ago\"/\"Sperrliste aktualisiert vor %a Tagen, %H:%I\"/g"
-		#		mysed "s/\"Blocking list updated one day, %H:%I ago\"/\"Sperrliste aktualisiert vor einem Tag, %H:%I\"/g"
-		#		mysed "s/\"Blocking list updated %H:%I ago\"/\"Sperrliste aktualisiert vor %H:%I\"/g"
+			if [[ "$i" = */scripts/pi-hole/php/gravity.php ]]; then
+				mysed "s/\"Blocking list updated %a days, %H:%I (hh:mm) ago\"/\"Sperrliste vor %a Tagen, %H:%I (hh:mm) aktualisiert\"/g"
+				mysed "s/\"Blocking list updated one day, %H:%I (hh:mm) ago\"/\"Sperrliste vor einem Tag, %H:%I (hh:mm) aktualisiert\"/g"
+				mysed "s/\"Blocking list updated %H:%I (hh:mm) ago\"/\"Sperrliste vor %h Stunden und %i Minuten aktualisiert\"/g"
+
 		#		mysed "s/\"Blocking list not found\"/\"Sperrliste nicht gefunden\"/g"
-		#	fi
+			fi
 
 			if [[ "$i" = */scripts/pi-hole/js/index.js ]]; then
 				mysed "s/\"% of \"/\"% von \"/g"
