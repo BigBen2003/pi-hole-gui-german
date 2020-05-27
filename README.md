@@ -11,6 +11,10 @@ Aktuell treten vereinzelt Funktions-Fehler auf, aufgrund dessen über die Websei
 
 Ein Einsatz kann derzeit nur in einer Testumgebung empfohlen werden.
 
+PiHole VERSION 4
+================
+Bei Einsatz dieser Version muss der Branch "Version4" verwendet werden.
+
 Voraussetzungen
 ===============
 
