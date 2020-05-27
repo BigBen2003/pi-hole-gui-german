@@ -3,6 +3,14 @@ Nach Möglichkeit werden alle englischen Begriffe ins Deutsche übersetzt.
 
 Für alle, die in Pi-Hole eine GUI in Deutscher Sprache suchen, wurde ein Bash-Script entwickelt, welches in Original-Pi-Hole-Dateien die englischen Begriffe gegen Deutsche austauscht.
 
+Hinweis zu PiHole Version 5
+===========================
+Die Deutsche Übersetzung wird derzeit überarbeitet und für PiHole Version 5 angepasst.
+
+Aktuell treten vereinzelt Funktions-Fehler auf, aufgrund dessen über die Webseite manche Funktionen fehlerhaft ausgeführt werden.
+
+Ein Einsatz kann derzeit nur in einer Testumgebung empfohlen werden.
+
 Voraussetzungen
 ===============
 
