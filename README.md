@@ -5,11 +5,9 @@ Für alle, die in Pi-Hole eine GUI in Deutscher Sprache suchen, wurde ein Bash-S
 
 Hinweis zu PiHole Version 5
 ===========================
-Die Deutsche Übersetzung wird derzeit überarbeitet und für PiHole Version 5 angepasst.
+Für die Version 5 wird diese Quelle empfohlen: https://github.com/pimanDE/translate2german
 
-Aktuell treten vereinzelt Funktions-Fehler auf, aufgrund dessen über die Webseite manche Funktionen fehlerhaft ausgeführt werden.
-
-Ein Einsatz kann derzeit nur in einer Testumgebung empfohlen werden.
+Dieses Script wird nicht mehr weiter aktualisiert.
 
 PiHole VERSION 4
 ================
